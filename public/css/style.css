@@ -1,0 +1,9 @@
+.sliding-middle-out {
+	visibility: visible;
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+	transition: 0.3s;
+	
+	border-bottom-color: pink;
+	border-bottom-style: solid;
+}
