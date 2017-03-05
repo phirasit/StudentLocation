@@ -14,7 +14,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Students
-                    <button class="btn btn-primary" onclick="refreshLocation();">refresh</button>
+                    <span class='text-right' style='display: inline-block;' width='100%'>
+
+                    {{ Html::image('img/refresh_icon.png', 'refresh', array('width' => 60, 'height' => 50, 'onclick' => 'refreshLocation();', 'class' => 'btn')) }}
+                    </span>
                 </div>
 
                 <div class="panel-body">
@@ -46,20 +49,37 @@
                 </div>
                 
                 <div class="panel-footer text-center">
-                    <form action="{{ url('/manageStudent') }}" method="get" class='form-inline'>
+                    {{ Form::open(array('url' => '/manageStudent', 'class' => 'form-inline')) }}
                         <div class="input-group">
-                            <input name='student_id' type='input' class='form-control span2' placeholder='Student ID'/>
+                            {{ Form::text('student_id', '', array(
+                                'class' => 'form-control span2', 
+                                'placeholder' => 'Student ID',
+                            )) }}
                             <span class='input-group-addon btn label-success' style="border-color:green;">
-                                <label for="add" class='label'>+</label>
-                                <input id="add" name="type" type='submit' class='hidden btn btn-xs' value="add"/>
+                                {{ Form::label('add', '+', array(
+                                    'style' => 'cursor:pointer;',
+                                    'class' => 'label',
+                                )) }}
+                                {{ Form::submit('add', array(
+                                    'id' => 'add',
+                                    'name' => 'type', 
+                                    'class' => 'hidden btn bnt-xs', 
+                                )) }}
                             </span>
                             <span class='input-group-addon btn label-danger' style="border-color:brown;">
-                                <label for="remove" class='label'>-</label>
-                                <input id="remove" name="type" type='submit' class='hidden btn btn-xs' value="remove"/>
+                                {{ Form::label('remove', '-', array(
+                                    'style' => 'cursor:pointer;',
+                                    'class' => 'label',
+                                )) }}
+                                {{ Form::submit('remove', array(
+                                    'id' => 'remove',
+                                    'name' => 'type', 
+                                    'class' => 'hidden btn bnt-xs', 
+                                )) }}
                             </span>
                         </div>
-                    </form>
-                    @if(session('addingStudent'))
+                    {{ Form::close() }}
+                    @if (session('addingStudent'))
                         <div>
                             @if(session('addingStudent')['success'] == true)
                                 <p class='text-success'> {{ session('addingStudent')['message'] }} </p>
@@ -76,7 +96,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Current Location</div>
 
-                <div class="panel-body">
+                <div class="panel-body text-center">
+                    {{ HTML::image('img/map.gif') }}
                 </div>
 
                 <div class="panel-footer">

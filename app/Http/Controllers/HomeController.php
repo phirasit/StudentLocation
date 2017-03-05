@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use App\Device;
+use App\Student;
+use App\UserStudent;
+
 class HomeController extends Controller
 {
     /**
@@ -17,27 +21,21 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    protected $students_table = 'students';
-    protected $user_student_relationship_table = 'user_student_relationship';
-    protected $device_table = 'device_location';
     protected $randomColor = ['#90EE90', '#FCAEFC', '#87CEFA', '#F08080', '#008080'];
 
     /**
-     * Show the application main text.
+     * Show the application main page.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
 
-        // recieve every students who related to user
+        // recieve every students who are related to user
         $students = [];
-        foreach (DB::table($this->user_student_relationship_table)
-                ->where('user_id', Auth::user()->id)
-                ->get() as $user) {
+
+        foreach (UserStudent::getRelationship(Auth::user()->id)->cursor() as $relationship) {
             
-            $student = DB::table($this->students_table)
-                ->where('id', $user->student_id)
-                ->first();
+            $student = Student::getStudentByID($relationship->student_id);
 
             if($student == null) {
                 array_push($students, [
@@ -55,7 +53,7 @@ class HomeController extends Controller
                     'std_id' => $student->std_id,
                     'std_level' => (int)($student->std_room/10),
                     'std_class' => $student->std_room%10,
-                    'location' => app('App\Http\Controllers\LocationController')->getRealLocation($student->device_mac_address),
+                    'location' => Device::getArea($student->device_mac_address),
                     'color' => $this->randomColor[ count($students) % count($this->randomColor)],
                     'device_mac_address' => $student->device_mac_address,
                 ]);
@@ -75,29 +73,19 @@ class HomeController extends Controller
         $student_id = $request->input('student_id');
         $type = $request->input('type');
 
-        $userCurrentStudents = DB::table($this->user_student_relationship_table)
-            ->where('user_id', Auth::user()->id);
-
-
-        $student = DB::table('students')->where('std_id', $student_id)->first();
+        $student = Student::getStudentByStudentID($student_id);
         if ($student == null) {
             return redirect('home')->with('addingStudent', [
                 'success' => false,
-                'message' => 'Student is not in the database',
+                'message' => 'This ID is not in the database',
             ]);
         }
 
         if ($type == 'add') {
 
-            $numStudent = $userCurrentStudents->count();
-            $maximum_student_num_per_user = env('STUDENT_LIMIT', 5);
-            $userRelationExist = $userCurrentStudents->where('student_id', $student->id)->exists();
+            $result = UserStudent::addNewRelationship(Auth::user()->id, $student->id); 
 
-            if ($numStudent < $maximum_student_num_per_user and $userRelationExist == false) {
-                DB::table($this->user_student_relationship_table)->insert([
-                    'user_id' => Auth::user()->id,
-                    'student_id' => $student->id,
-                ]);
+            if ($result == '') {
                 return redirect('home')->with('addingStudent', [
                     'success' => true,
                     'message' => 'New Record is successfully added',
@@ -105,26 +93,23 @@ class HomeController extends Controller
             } else {
                 return redirect('home')->with('addingStudent', [
                     'success' => false,
-                    'message' => ($numStudent >= $maximum_student_num_per_user ?
-                        "Maximum number of student reach" : 
-                        "This student has already been added"),
+                    'message' => $result,
                 ]);
             }
         } else if ($type == 'remove') {
 
-            $relation = $userCurrentStudents->where('student_id', $student->id);
+            $result = UserStudent::removeRelationship(Auth::user()->id, $student->id);
 
-            if ($relation->exists()) {
-                $relation->delete();
+            if ($result == '') {
                 return redirect('home')->with('addingStudent', [
                     'success' => true,
-                    'message' => 'This student has been deleted',
+                    'message' => 'This Record has been deleted',
                 ]);                
             } else {
                 return redirect('home')->with('addingStudent', [
                     'success' => false,
-                    'message' => 'This student is not in your list',
-                ]);                
+                    'message' => $result,
+                ]);
             }
         } else {
             return abort(404);

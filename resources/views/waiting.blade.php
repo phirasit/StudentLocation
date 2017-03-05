@@ -37,10 +37,11 @@
     }
 
     function endSlideShow() {
-        // location.reload(true);
+        location.reload(true);
     }
 
     function startSlideShow() {
+        console.log(Math.max(data.length, 1) * timeLimit);
         setTimeout(endSlideShow, Math.max(data.length, 1) * timeLimit);
         if (data.length > 0) {
             runSlideShow(data);
@@ -60,7 +61,7 @@
                 <div class="panel-heading">
                     Information
                 </div>
-                <div class="panel-body" id='main-display'>
+                <div class="panel-body" id='main-display' style='display:none;'>
                 </div>
             </div>
         </div>

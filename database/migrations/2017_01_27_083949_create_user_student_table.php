@@ -13,7 +13,7 @@ class CreateUserStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_student_relationship', function (Blueprint $table) {
+        Schema::create('user_student_relationships', function (Blueprint $table) {
             $table->integer('user_id')->index();
             $table->integer('student_id');
         });
@@ -26,6 +26,6 @@ class CreateUserStudentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_student_relationship');
+        Schema::dropIfExists('user_student_relationships');
     }
 }

@@ -2,6 +2,11 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Adapter;
+use App\Device;
+use App\Student;
+use App\User;
+
 class DatabaseSeeder extends Seeder {
     /**
      * Run the database seeds.
@@ -28,9 +33,9 @@ class UsersTableSeeder extends Seeder {
 	public function run() {
 
 		// clear database
-		DB::table('users')->delete();
+		User::truncate();
 
-		DB::table('users')->insert([
+		User::insert([
 			'name' 		=> 'admin',
 			'email' 	=> 'admin@CUD.com',
 			'password' 	=> bcrypt('admin'),
@@ -44,9 +49,9 @@ class StudentsTableSeeder extends Seeder {
 	public function run() {
 
 		// clear database
-		DB::table('students')->delete();
+		Student::truncate();
 
-		DB::table('students')->insert([
+		Student::insert([
 			'name' 		=> 'นาย A',
 			'std_id' 	=> 47411449,
 			'std_room' 	=> 67,
@@ -54,7 +59,7 @@ class StudentsTableSeeder extends Seeder {
 			'device_mac_address' => 'TBA1',
 		]);
 
-		DB::table('students')->insert([
+		Student::insert([
 			'name' 		=> 'mr B',
 			'std_id' 	=> 12345674,
 			'std_room' 	=> 32,
@@ -70,9 +75,9 @@ class DeviceLocationTableSeeder extends Seeder {
 	public function run() {
 
 		// clear database
-		DB::table('device_location')->delete();
+		Device::truncate();
 
-		DB::table('device_location')->insert([
+		Device::insert([
 			'device_mac_address' => 'TBA1',
 			'area' => 'Room404',
 			'location_x' => 0,
@@ -80,7 +85,7 @@ class DeviceLocationTableSeeder extends Seeder {
 			'location_z' => 0,
 		]);
 
-		DB::table('device_location')->insert([
+		Device::insert([
 			'device_mac_address' => 'TBA2',
 			'area' => 'Room304',
 			'location_x' => 0,
@@ -95,16 +100,16 @@ class UserStudentRelationshipTableSeeder extends Seeder {
 	public function run() {
 
 		// clear database
-		DB::table('user_student_relationship')->delete();
+		DB::table('user_student_relationships')->truncate();
 
-		DB::table('user_student_relationship')->insert([
-			'user_id' => App\User::where('name', 'admin')->first()->id,
-			'student_id' => DB::table('students')->where('std_id', 47411449)->first()->id,
+		DB::table('user_student_relationships')->insert([
+			'user_id' => User::where('name', 'admin')->first()->id,
+			'student_id' => Student::where('std_id', 47411449)->first()->id,
 		]);
 
-		DB::table('user_student_relationship')->insert([
-			'user_id' => App\User::where('name', 'admin')->first()->id,
-			'student_id' => DB::table('students')->where('std_id', 12345674)->first()->id,
+		DB::table('user_student_relationships')->insert([
+			'user_id' => User::where('name', 'admin')->first()->id,
+			'student_id' => Student::where('std_id', 12345674)->first()->id,
 		]);
 	}	
 }
@@ -113,9 +118,21 @@ class WaitingSeeder extends Seeder {
 
 	public function run() {
 
-		DB::table('waiting')->delete();
+		DB::table('waitinglists')->truncate();
 
-		DB::table('waiting')->insert(['id' => DB::table('students')->where('std_id', 47411449)->first()->id, 'area' => 'Door1']);
-		DB::table('waiting')->insert(['id' => DB::table('students')->where('std_id', 12345674)->first()->id, 'area' => 'Door2']);
+		DB::table('waitinglists')->insert([
+			'id' => Student::getStudentByStudentID(47411449)->id, 
+			'area' => 'Door1'
+		]);
+
+		DB::table('waitinglists')->insert([
+			'id' => Student::getStudentByStudentID(12345674)->id, 
+			'area' => 'Door1'
+		]);
+
+		DB::table('waitinglists')->insert([
+			'id' => Student::getStudentByStudentID(12345674)->id, 
+			'area' => 'Door2'
+		]);
 	}
 }
