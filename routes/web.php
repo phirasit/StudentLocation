@@ -11,4 +11,5 @@ Route::get('/updateProfile', 'HomeController@updateProfile')->middleware('auth')
 Route::post('/getLocation', 'LocationController@getLocation')->middleware('auth');
 Route::get('/sendLocation/{adapter_id}', 'LocationController@sendLocation');
 
-Route::get('/waitingList/{location}', 'WaitingListController@displayWaiting')->middleware('auth');
+Route::post('/callStudent/{device_mac_address}/{area}', 'WaitingListController@callStudent')->middleware('auth');
+Route::get('/WaitingList/{location}', 'WaitingListController@displayWaiting')->middleware('auth');

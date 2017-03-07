@@ -79,7 +79,7 @@ class DeviceLocationTableSeeder extends Seeder {
 
 		Device::insert([
 			'device_mac_address' => 'TBA1',
-			'area' => 'Room404',
+			'area' => 'Door1',
 			'location_x' => 0,
 			'location_y' => 0,
 			'location_z' => 0,
@@ -87,7 +87,7 @@ class DeviceLocationTableSeeder extends Seeder {
 
 		Device::insert([
 			'device_mac_address' => 'TBA2',
-			'area' => 'Room304',
+			'area' => 'Room404',
 			'location_x' => 0,
 			'location_y' => 0,
 			'location_z' => 0,
@@ -119,6 +119,15 @@ class WaitingSeeder extends Seeder {
 	public function run() {
 
 		DB::table('waitinglists')->truncate();
+
+		DB::table('waitinglists')->insert([
+			'id' => 0,
+			'area' => 'Door1',
+		]);
+		DB::table('waitinglists')->insert([
+			'id' => 0,
+			'area' => 'Door2',
+		]);
 
 		DB::table('waitinglists')->insert([
 			'id' => Student::getStudentByStudentID(47411449)->id, 

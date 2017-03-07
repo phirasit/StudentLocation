@@ -7,3 +7,17 @@
 	border-bottom-color: pink;
 	border-bottom-style: solid;
 }
+
+img.location_image {
+    height: auto; 
+    width: 100%;
+}
+
+div.circle {
+    border-radius: 50%;
+    /*behavior: url(PIE.htc);*/  /*remove if you don't care about IE8*/ 
+
+    width: 30px;
+    height: 30px;
+    position: absolute;
+}

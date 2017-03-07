@@ -9,12 +9,31 @@ use App\Adapter;
 use App\Device;
 use App\Location;
 use App\Student;
+use App\WaitingList;
 
 class LocationController extends Controller {
 
 
     public function getLocation(Request $request) {
-        return Device::getArea($request->input('device_mac_address'));
+
+        $device_mac_address = $request->input('device_mac_address');
+        $device = Device::getDeviceByAddress($device_mac_address);
+
+        if ($device == null) {
+            return json_encode('');
+        }
+
+        Location::triangulatePosition($device->getID());
+
+        $area = Device::getArea($device_mac_address);
+
+        $data = [
+            'area' => $area,
+            'callButton' => WaitingList::getCallButton($device->id, $area),
+            'location' => Device::getLocation($device_mac_address),
+        ];
+
+        return json_encode($data);
     }
 
     public function sendLocation($adapter_name, Request $request) {

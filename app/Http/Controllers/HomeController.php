@@ -43,8 +43,7 @@ class HomeController extends Controller
                     'std_id' => 'unknown',
                     'std_level' => 'null',
                     'std_class' => 'null',
-                    'student_mac_address' => 'null',
-                    'location' => 'unknown',                    
+                    'student_mac_address' => 'null',       
                     'color' => 'black',
                 ]);
             } else {
@@ -53,7 +52,6 @@ class HomeController extends Controller
                     'std_id' => $student->std_id,
                     'std_level' => (int)($student->std_room/10),
                     'std_class' => $student->std_room%10,
-                    'location' => Device::getArea($student->device_mac_address),
                     'color' => $this->randomColor[ count($students) % count($this->randomColor)],
                     'device_mac_address' => $student->device_mac_address,
                 ]);

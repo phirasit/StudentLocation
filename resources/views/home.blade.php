@@ -2,10 +2,13 @@
 
 @section('content')
 
-<script type='text/javascript' src='{{ url('js/getLocation.js') }}'></script>
+{{ Html::style('css/style.css') }}
+{{ Html::script('js/location.js') }}
+
 <script type="text/javascript">
     // define variables
     var getLocation_url = '{{ url('/getLocation') }}';
+    var callStudent_url = '{{ url('/callStudent') }}';
 </script>
 
 <div class="container">
@@ -22,27 +25,22 @@
 
                 <div class="panel-body">
                     <table class='table-condensed'>
-                    @foreach($students as $student)
+                    @foreach ($students as $student)
                         <tr>
-                            <td class='text-left' style='width:100%;'>
+                            <td class='text-left' width='100%'>
                                 <span style='border-bottom-color: {{ $student['color'] }}; border-bottom-style: solid;'>
                                     {{ $student['name'] }}({{ $student['std_level'] }}/{{ $student['std_class'] }}) 
                                 </span>
                             </td>
-                            <td class="col-md-2">
-                                <div id='{{ $student['std_id'] }}_location'>
-                                    {{ $student['location'] }}
+{{--                             
+                            <td class="col-md-1 text-center">
+                                {{ $student['message'] or "No Message" }}
+                            </td>
+--}}
+                            <td class="col-md-1 text-center">
+                                <div id='{{ $student['std_id'] }}_location' style='display: inline-block;'>
                                 </div>
                             </td>
-{{--                             <td class='col-md-1'>
-                                <button href='' class='btn btn-primary'>
-                                    CALL
-                                </button>
-                            </td>
- --}}
-                            <script type='text/javascript'>
-                                registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location");
-                            </script>
                         </tr>
                     @endforeach
                     </table>
@@ -92,15 +90,32 @@
             </div>
         </div>
 
+        @foreach ($students as $student)
+            <script type='text/javascript'>
+                registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token");
+            </script>
+        @endforeach
+
         <div class="col-md-8 text-left">
             <div class="panel panel-default">
                 <div class="panel-heading">Current Location</div>
 
                 <div class="panel-body text-center">
-                    {{ HTML::image('img/map.gif') }}
+    {{--                     @foreach ($students as $student)
+                            <div class='display:inline-block;'>
+                                <div id='{{ $student['std_id'] }}_token' class='circle' 
+                                    style='background-color: {{ $student['color'] }};'>
+                                    
+                                </div>
+                            </div>
+                        @endforeach
+ --}}                    {{ HTML::image('img/map.jpg', '', array(
+                        'id' => 'map',
+                        'class' => 'location_image',
+                    )) }}
                 </div>
 
-                <div class="panel-footer">
+                <div class="panel-footer text-center">
                 </div>
             </div>
         </div>
