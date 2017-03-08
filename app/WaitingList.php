@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use \DateTime;
 
 class WaitingList extends Model {
-
+    
 	public $table = 'waitinglists';
 
 	public static function getListOfStudent($area, $limit) {

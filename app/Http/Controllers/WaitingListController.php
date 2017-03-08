@@ -14,7 +14,6 @@ use \DateTime;
 class WaitingListController extends Controller
 {
 
-
     public function displayWaiting($location) {
 
         $time = new DateTime();

@@ -3,16 +3,22 @@ var devices = [];
 var csrf = window.Laravel.csrfToken;
 
 // add new device to devices
-function registerStudentDevice(device_mac_address, display_id, token_id) {
+function registerStudentDevice(device_mac_address, display_id, token_id, color) {
 	devices.push({
 		device_mac_address: device_mac_address,
 		display_id: display_id,
 		token_id: token_id,
+		color: color,
 	});
 }
 
+function getAreaPositionInMap(area, mapINFO) {
+	result = $(mapINFO).find(area).text();
+	return result == "" ? [] : JSON.parse(result);
+}
+
 // get new location for all devices
-function refreshLocation() {
+function refreshLocation(display_canvas_id, mapINFO) {
 
 	var rect = $("#map").position();
 
@@ -21,7 +27,9 @@ function refreshLocation() {
 		return;
 	}
 
-	function refresh(idx) {
+	clearCanvas(display_canvas_id);
+
+	function refreshEachDevice(idx) {
 		
 		if (idx >= devices.length) {
 			return;
@@ -54,17 +62,14 @@ function refreshLocation() {
 				console.log('unknown response:' + data.callButton);
 			}
 
-			$("#" + device["token_id"]).offset({
-				top: rect.top + data.location[0],
-				left: rect.left + data.location[1],
-			});
+			drawArea(display_canvas_id, getAreaPositionInMap(data.area, mapINFO), device.color);
 
-			refresh(idx+1);
+			refreshEachDevice(idx+1);
 		});
 		
 	};
 
-	refresh(0);
+	refreshEachDevice(0);
 }
 
 function call(device_mac_address, area) {
@@ -78,12 +83,6 @@ function call(device_mac_address, area) {
         	area: area,
         },
 	}).done(function(responseText) {
-		console.log(responseText);
-		refreshLocation();
+		refresh();
 	});
-}
-
-// set onload function
-document.body.onload = function() {
-	refreshLocation();
 }

@@ -4,11 +4,32 @@
 
 {{ Html::style('css/style.css') }}
 {{ Html::script('js/location.js') }}
+{{ Html::script('js/drawlocation.js') }}
+{{ Html::script('js/loadXML.js') }}
 
 <script type="text/javascript">
+    
     // define variables
     var getLocation_url = '{{ url('/getLocation') }}';
     var callStudent_url = '{{ url('/callStudent') }}';
+
+
+    var mapINFO;
+
+    function refresh() {
+        refreshLocation("mapCanvas", mapINFO);
+    }
+
+    // set onload function
+    document.body.onload = function() {
+        
+        @foreach ($students as $student)
+            registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token", "{{ $student['color'] }}");
+        @endforeach
+
+        mapINFO = loadXML("{{ url('/img/map.xml') }}");
+        refresh();
+    }
 </script>
 
 <div class="container">
@@ -19,7 +40,7 @@
                     Students
                     <span class='text-right' style='display: inline-block;' width='100%'>
 
-                    {{ Html::image('img/refresh_icon.png', 'refresh', array('width' => 60, 'height' => 50, 'onclick' => 'refreshLocation();', 'class' => 'btn')) }}
+                    {{ Html::image('img/refresh_icon.png', 'refresh', array('width' => 60, 'height' => 50, 'onclick' => 'refresh();', 'class' => 'btn')) }}
                     </span>
                 </div>
 
@@ -90,31 +111,27 @@
             </div>
         </div>
 
-        @foreach ($students as $student)
-            <script type='text/javascript'>
-                registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token");
-            </script>
-        @endforeach
-
         <div class="col-md-8 text-left">
             <div class="panel panel-default">
                 <div class="panel-heading">Current Location</div>
 
                 <div class="panel-body text-center">
-    {{--                     @foreach ($students as $student)
-                            <div class='display:inline-block;'>
-                                <div id='{{ $student['std_id'] }}_token' class='circle' 
-                                    style='background-color: {{ $student['color'] }};'>
-                                    
-                                </div>
+    {{--                     
+                    @foreach ($students as $student)
+                        <div class='display:inline-block;'>
+                            <div id='{{ $student['std_id'] }}_token' class='circle' 
+                                style='background-color: {{ $student['color'] }};'>
+                                
                             </div>
-                        @endforeach
- --}}                    {{ HTML::image('img/map.jpg', '', array(
-                        'id' => 'map',
-                        'class' => 'location_image',
-                    )) }}
+                        </div>
+                    @endforeach
+ --}}
+                    <canvas id="mapCanvas" class='col-md-12' height='300px'
+                        style="border:1px solid #000000; width: 100%; background: url({{ url('img/map.jpg') }}); background-size: 100% 100%; background-repeat: no-repeat; margin: 0; padding: 0;">
+                        Your browser does not support the HTML5 canvas tag.
+                    </canvas>
                 </div>
-
+                
                 <div class="panel-footer text-center">
                 </div>
             </div>
