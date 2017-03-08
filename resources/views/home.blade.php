@@ -27,7 +27,7 @@
             registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token", "{{ $student['color'] }}");
         @endforeach
 
-        mapINFO = loadXML("{{ url('/img/map.xml') }}");
+        mapINFO = loadXML("{{ url('/map/CUD/map.xml') }}");
         refresh();
     }
 </script>
@@ -127,7 +127,7 @@
                     @endforeach
  --}}
                     <canvas id="mapCanvas" class='col-md-12' height='300px'
-                        style="border:1px solid #000000; width: 100%; background: url({{ url('img/map.jpg') }}); background-size: 100% 100%; background-repeat: no-repeat; margin: 0; padding: 0;">
+                        style="border:1px solid #000000; width: 100%; background: url({{ url('map/CUD/map.jpg') }}); background-size: 100% 100%; background-repeat: no-repeat; margin: 0; padding: 0;">
                         Your browser does not support the HTML5 canvas tag.
                     </canvas>
                 </div>

@@ -1,7 +1,6 @@
 
 function clearCanvas(canvas_id) {
 
-	console.log(canvas_id);
 	var canvas = document.getElementById(canvas_id);
 	var ctx = canvas.getContext("2d");
 

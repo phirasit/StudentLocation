@@ -8,16 +8,16 @@ use \DateTime;
 
 class Location extends Model {
 
-    public static function enqueue_new_location($adapter_id, $device_mac_address) {
+    public static function enqueue_new_location($adapter_id, $device_info) {
 
-    	$device_id = Device::getDeviceByAddress($device_mac_address)->id;
+        $device_id = Device::getDeviceByAddress($device_info['device_mac_address']);
 
     	$record = Location::firstOrNew([
     		'device_id' => $device_id,
     		'adapter_id' => $adapter_id,
     	]);
 
-    	$record->length = $device['length'];
+    	$record->length = $device_info['length'];
     	$record->save();
     }
 
