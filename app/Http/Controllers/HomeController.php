@@ -58,7 +58,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('home')->with('students', $students);
+        return view('home')->with('students', $students)->with('map', 'Nitad');
     }
 
     /**

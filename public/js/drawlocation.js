@@ -1,4 +1,6 @@
 
+var radius = 5;
+
 function clearCanvas(canvas_id) {
 
 	var canvas = document.getElementById(canvas_id);
@@ -35,4 +37,29 @@ function drawArea(canvas_id, points, color) {
 	ctx.fillStyle = color;
 	ctx.closePath();
 	ctx.fill();
+}
+
+function drawCircle(canvas_id, pos, color) {
+
+	var canvas = document.getElementById(canvas_id);
+	const w = canvas.width, h = canvas.height;
+	var ctx = canvas.getContext("2d");
+	
+	ctx.strokeStyle = color;
+
+	pos[0] /= widthDistance;
+	pos[1] /= heightDistance;
+	
+	ctx.globalAlpha = 1.0;
+	ctx.beginPath();
+	ctx.arc(pos[0] * w, pos[1] * h, radius, 0, 2*Math.PI);
+	ctx.stroke();
+
+
+	ctx.globalAlpha = 0.5;
+ 	ctx.fillStyle = color;
+	ctx.closePath();
+	ctx.fill();
+
+
 }

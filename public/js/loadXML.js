@@ -5,3 +5,7 @@ function loadXML(file, done) {
         success: done,
     });
 }
+
+function extractXML(xml, key) {
+	return $(xml).find(key).text();
+}

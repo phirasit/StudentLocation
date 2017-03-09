@@ -12,7 +12,8 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'CUD Student Locating System',
+    // 'name' => 'CUD Student Locating System',
+    'name' => 'Locating System',
 
     /*
     |--------------------------------------------------------------------------

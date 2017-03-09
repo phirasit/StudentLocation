@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserStudent extends Model
 {
+    public $fillable = ['user_id', 'student_id'];
     
     public $table = 'user_student_relationships';
 

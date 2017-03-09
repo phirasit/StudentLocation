@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use App\Adapter;
 use App\Device;
 use App\Student;
+use App\Location;
 use App\User;
 
 class DatabaseSeeder extends Seeder {
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(StudentsTableSeeder::class);
         $this->call(DeviceLocationTableSeeder::class);
         $this->call(AdapterTableSeeder::class);
+        $this->call(LocationTableSeeder::class);
         $this->call(UserStudentRelationshipTableSeeder::class);
         $this->call(WaitingSeeder::class);
 
@@ -54,7 +56,7 @@ class StudentsTableSeeder extends Seeder {
 
 		Student::insert([
 			'name' 		=> 'นาย A',
-			'std_id' 	=> 47411449,
+			'std_id' 	=> '47411449',
 			'std_room' 	=> 67,
 			'std_no'	=> 39,
 			'device_mac_address' => 'TBA1',
@@ -62,11 +64,20 @@ class StudentsTableSeeder extends Seeder {
 
 		Student::insert([
 			'name' 		=> 'mr B',
-			'std_id' 	=> 12345674,
+			'std_id' 	=> '12345674',
 			'std_room' 	=> 32,
 			'std_no'	=> 4,
 			'device_mac_address' => 'TBA2',
 		]);
+
+		Student::insert([
+			'name' 		=> 'Gof',
+			'std_id' 	=> '5931040421',
+			'std_room' 	=> -1,
+			'std_no'	=> -1,
+			'device_mac_address' => 'FF:FF:40:00:15:0D',
+		]);
+
 	}
 }
 
@@ -84,6 +95,68 @@ class AdapterTableSeeder extends Seeder {
 			'location_x' => 0,
 			'location_y' => 0,
 			'location_z' => 0,
+		]);
+
+
+		Adapter::insert([
+			'adapter_name' => '2343402',
+			'area' => 'tmp2',
+			'location_x' => 10,
+			'location_y' => 10,
+			'location_z' => 0,
+		]);
+
+		Adapter::insert([
+			'adapter_name' => '234342402',
+			'area' => 'tmp2',
+			'location_x' => 0,
+			'location_y' => 10,
+			'location_z' => 0,
+		]);
+
+		Adapter::insert([
+			'adapter_name' => '234343402',
+			'area' => 'tmp2',
+			'location_x' => 10,
+			'location_y' => 10,
+			'location_z' => 0,
+		]);
+	}
+}
+
+class LocationTableSeeder extends Seeder {
+
+	public function run() {
+
+		// clear database
+		Location::truncate();
+
+		Location::create([
+			'device_id' => 3,
+			'adapter_id' => 1,
+			'length' => 7,
+			'updated_at' => time(),
+		]);
+
+		Location::create([
+			'device_id' => 3,
+			'adapter_id' => 2,
+			'length' => 7,
+			'updated_at' => time(),
+		]);
+
+		Location::create([
+			'device_id' => 3,
+			'adapter_id' => 3,
+			'length' => 7,
+			'updated_at' => time(),
+		]);
+
+		Location::create([
+			'device_id' => 3,
+			'adapter_id' => 4,
+			'length' => 8,
+			'updated_at' => time(),
 		]);
 	}
 }
@@ -107,15 +180,15 @@ class DeviceLocationTableSeeder extends Seeder {
 			'device_mac_address' => 'TBA2',
 			'area' => 'Room404',
 			'location_x' => 0,
-			'location_y' => 0,
+			'location_y' => 10,
 			'location_z' => 0,
 		]);
 
 		Device::insert([
 			'device_mac_address' => 'FF:FF:40:00:15:0D',
-			'area' => '',
-			'location_x' => 0,
-			'location_y' => 0,
+			'area' => 'Robotic Club',
+			'location_x' => 10,
+			'location_y' => 10,
 			'location_z' => 0,
 		]);
 	}
@@ -136,6 +209,11 @@ class UserStudentRelationshipTableSeeder extends Seeder {
 		DB::table('user_student_relationships')->insert([
 			'user_id' => User::where('name', 'admin')->first()->id,
 			'student_id' => Student::where('std_id', 12345674)->first()->id,
+		]);
+
+		DB::table('user_student_relationships')->insert([
+			'user_id' => User::where('name', 'admin')->first()->id,
+			'student_id' => Student::where('std_id', 5931040421)->first()->id,
 		]);
 	}	
 }

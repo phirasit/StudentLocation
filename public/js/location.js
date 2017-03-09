@@ -13,7 +13,7 @@ function registerStudentDevice(device_mac_address, display_id, token_id, color) 
 }
 
 function getAreaPositionInMap(area, mapINFO) {
-	result = $(mapINFO).find(area).text();
+	result = extractXML(mapINFO, area);
 	return result == "" ? [] : JSON.parse(result);
 }
 
@@ -62,7 +62,11 @@ function refreshLocation(display_canvas_id, mapINFO) {
 				console.log('unknown response:' + data.callButton);
 			}
 
-			drawArea(display_canvas_id, getAreaPositionInMap(data.area, mapINFO), device.color);
+			// drawArea(display_canvas_id, getAreaPositionInMap(data.area, mapINFO), device.color);
+
+			if (data.location != null && data.location.length == 3) {
+				drawCircle(display_canvas_id, [data.location[0], data.location[1]], device.color);
+			}
 
 			refreshEachDevice(idx+1);
 		});

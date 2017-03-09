@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Device extends Model {
 
-    protected $fillable = ['area'];
+    protected $fillable = ['area', 'location_x', 'location_y', 'location_z'];
     
     const UPDATE_AT = 'last_checkin';
 

@@ -17,7 +17,7 @@ class CreateStudentsTable extends Migration
             $table->increments('id');
 
             $table->string('name');
-            $table->integer('std_id')->index()->unique();
+            $table->string('std_id')->index()->unique();
             $table->integer('std_room')->index();
             $table->integer('std_no')->index();
 

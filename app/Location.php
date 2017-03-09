@@ -10,6 +10,10 @@ class Location extends Model {
 
     protected $fillable = ['device_id', 'adapter_id'];
 
+    public function getLastUpdatedTime() {
+        return $this->updated_at->format('U');
+    }
+
     public static function enqueueNewLocation($adapter_id, $device, $length) {
 
     	$record = Location::firstOrNew([
@@ -43,8 +47,7 @@ class Location extends Model {
      */
     public static function triangulatePosition($device_id) {
 
-        $date = new DateTime();
-    	$currentTime = $date->getTimestamp();
+    	$currentTime = time();
 
     	// select only the latest 8 adapters
     	$allRecord = Location::where('device_id', $device_id)
@@ -53,14 +56,15 @@ class Location extends Model {
             ->get()
             ->all();
 
-    	$allRecord = array_filter($allRecord, function($record) {
-    		return $currentTime - $record->updated_at <= env('MAXIMUM_DELAY_TIME', 10);
-    	});
+        $allRecord = array_filter($allRecord, function($record) use ($currentTime) {
+            return $currentTime - $record->getLastUpdatedTime() <= env('MAXIMUM_DELAY_TIME', 1000);
+        });
 
-    	// number of recieved adapters is not enough
-    	if (count($allRecord) < env('MINIMUM_TRIANGULATION_ADAPTERS', 4)) {
-    		return 'There are not enough adapters here';
-    	}
+        // number of recieved adapters is not enough
+        if (count($allRecord) < env('MINIMUM_TRIANGULATION_ADAPTERS', 4)) {
+            return 'There are not enough adapters here';
+        }
+        
 
     	// get all info of each adapters
     	foreach ($allRecord as &$record) {
@@ -74,15 +78,17 @@ class Location extends Model {
     	same as dD/dy and dD/dz
     	*/
 
-    	$T = $adapter[0]->getLastUpdatedTime();
+    	$T = $allRecord[0]->getLastUpdatedTime();
+        $T = $currentTime;
         $alpha = 10.0;
         $learning_rate = 0.001;
-        $dimension = count($adapter[0]->getPosition());
+        $dimension = count($allRecord[0]->adapter->getPosition());
+
         foreach ($allRecord as &$record) {
-            $record->coef = exp(($record->adapter->updated_at - $T) / $alpha);
+            $record->coef = exp(($record->getLastUpdatedTime() - $T) / $alpha);
         }
     	
-        $position = $adapters[0]->getPosition();
+        $position = $allRecord[0]->adapter->getPosition();
     	
         for ($i = 0 ; $i < env('ITERATIONS', 100) ; ++$i) {
 
@@ -91,8 +97,8 @@ class Location extends Model {
                 $gradient = 0;
                 foreach ($allRecord as &$record) {
                     $gradient += $record->coef 
-    					* (distance2($record->adapter->getPosition(), $position) + $record->length)
-    					* ($position[$idx] - $record->adapter->getPosition($idx));
+    					* (Location::distance2($record->adapter->getPosition(), $position) + $record->length)
+    					* ($position[$idx] - $record->adapter->getSpecificPosition($idx));
                 }
                 $gradiences[$idx] = $gradient;
             }
