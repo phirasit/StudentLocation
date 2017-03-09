@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(UsersTableSeeder::class);
         $this->call(StudentsTableSeeder::class);
         $this->call(DeviceLocationTableSeeder::class);
+        $this->call(AdapterTableSeeder::class);
         $this->call(UserStudentRelationshipTableSeeder::class);
         $this->call(WaitingSeeder::class);
 
@@ -70,6 +71,23 @@ class StudentsTableSeeder extends Seeder {
 }
 
 
+class AdapterTableSeeder extends Seeder {
+
+	public function run() {
+
+		// clear database
+		Adapter::truncate();
+
+		Adapter::insert([
+			'adapter_name' => '66:39:21:1A:E7:B9',
+			'area' => 'Robotic club',
+			'location_x' => 0,
+			'location_y' => 0,
+			'location_z' => 0,
+		]);
+	}
+}
+
 class DeviceLocationTableSeeder extends Seeder {
 
 	public function run() {
@@ -88,6 +106,14 @@ class DeviceLocationTableSeeder extends Seeder {
 		Device::insert([
 			'device_mac_address' => 'TBA2',
 			'area' => 'Room404',
+			'location_x' => 0,
+			'location_y' => 0,
+			'location_z' => 0,
+		]);
+
+		Device::insert([
+			'device_mac_address' => 'FF:FF:40:00:15:0D',
+			'area' => '',
 			'location_x' => 0,
 			'location_y' => 0,
 			'location_z' => 0,

@@ -19,7 +19,7 @@ class Adapter extends Model
 		return array($this->location_x, $this->location_y, $this->location_z);
 	}
 
-	public function getPosition($idx) {
+	public function getSpecificPosition($idx) {
 		if ($idx == 0) return $this->location_x;
 		if ($idx == 1) return $this->location_y;
 		if ($idx == 2) return $this->location_z;

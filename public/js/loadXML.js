@@ -1,12 +1,7 @@
-function loadXML(file) {
-    var ans;
+function loadXML(file, done) {
     $.ajax({
-        async: false,
         type: 'GET',
         url: file,
-        success: function(data) {
-            ans = data;
-        }
+        success: done,
     });
-    return ans;
 }

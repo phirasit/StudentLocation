@@ -27,8 +27,10 @@
             registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token", "{{ $student['color'] }}");
         @endforeach
 
-        mapINFO = loadXML("{{ url('/map/CUD/map.xml') }}");
-        refresh();
+        loadXML("{{ url('/map/CUD/map.xml') }}", function(data) {
+            mapINFO = data;
+            refresh();
+        });
     }
 </script>
 

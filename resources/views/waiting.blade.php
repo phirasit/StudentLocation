@@ -17,23 +17,23 @@
     }
     
     function runSlideShow(data) {
-        if (data.length > 0) {
-            
-            var student = data[0];
-
-            console.log(student.row);
-
-            $("#"+student.row).addClass("sliding-middle-out");
-            $("#main-display").fadeOut(500).html(
-                student.id
-            ).fadeIn(500);
-
-            setTimeout(function() {
-                $("#"+student.row).removeClass("sliding-middle-out");
-                data.shift();
-                runSlideShow(data)
-            }, timeLimit);
+        if (data.length <= 0) {
+            return;
         }
+        var student = data[0];
+
+        console.log(student.row);
+
+        $("#"+student.row).addClass("sliding-middle-out");
+        $("#main-display").fadeOut(500).html(
+            student.id
+        ).fadeIn(500);
+
+        setTimeout(function() {
+            $("#"+student.row).removeClass("sliding-middle-out");
+            data.shift();
+            runSlideShow(data)
+        }, timeLimit);
     }
 
     function endSlideShow() {

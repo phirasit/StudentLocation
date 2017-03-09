@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Device extends Model {
 
+    protected $fillable = ['area'];
+    
     const UPDATE_AT = 'last_checkin';
 
     public static function getDeviceByID($device_id) {
@@ -27,7 +29,7 @@ class Device extends Model {
     }
 
     public function updateArea($area) {
-    	return $this->update(['area' => $area]);
+    	$this->update(['area' => $area]);
     }
 
     public function updateLocation($position) {

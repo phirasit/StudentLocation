@@ -50,13 +50,19 @@ class LocationController extends Controller {
 
         foreach ($content['data'] as $device) {
         
+            $dev = Device::getDeviceByAddress($device['device_mac_address']);
+            if ($dev == null) {
+                continue;
+            }
+
             if ($device['length'] != null and $device['length'] < env('RANGE_LIMIT', 20)) {
+                
                 // update a brief location  
-                Device::getDeviceByAddress($device_mac_address)->update_area($area);
+                $dev->updateArea($area);
             }
         
             // enqueue the data for position triangulation
-            Location::enqueue_new_position($adapter_id, $device);
+            Location::enqueueNewLocation($adapter_id, $dev, $device['length']);
         }
 
         return abort(200);
