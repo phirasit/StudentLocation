@@ -22,22 +22,21 @@ class Device extends Model {
     	$device = Device::getDeviceByAddress($device_mac_address);
     	return ($device == null ? "error" : $device->area);
     }
-
     public static function getLocation($device_mac_address) {
         $device = Device::getDeviceByAddress($device_mac_address);
-        return ($device == null ? [0, 0, 0] : [$device->location_x, $device->location_y, $device->location_z]);
+        return ($device == null ? [0, 0, 0] : $device->getCurrentLocation());
     }
 
     public function updateArea($area) {
-    	$this->update(['area' => $area]);
+        $this->update(['area' => $area]);
     }
 
     public function updateLocation($position) {
-    	return $this->update([
-    		'location_x' => $position[0],
-    		'location_y' => $position[1],
-    		'location_z' => $position[2],
-    	]);
+        return $this->update([
+            'location_x' => $position[0],
+            'location_y' => $position[1],
+            'location_z' => $position[2],
+        ]);
     }
 
     public function getID() {
@@ -45,6 +44,10 @@ class Device extends Model {
     }
     
     public function getLastUpdatedTime() {
-    	return $this->updated_at;
+        return $this->updated_at;
+    }
+
+    public function getCurrentLocation() {
+        return [$this->location_x, $this->location_y, $this->location_z];
     }
 }

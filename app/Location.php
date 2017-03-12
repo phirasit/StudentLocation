@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use \SSH;
 use \DateTime;
 
 class Location extends Model {
@@ -11,7 +12,7 @@ class Location extends Model {
     protected $fillable = ['device_id', 'adapter_id'];
 
     public function getLastUpdatedTime() {
-        return $this->updated_at->format('U');
+        return $this->updated_at == null ? time() : $this->updated_at->format('U');
     }
 
     public static function enqueueNewLocation($adapter_id, $device, $length) {
@@ -25,6 +26,10 @@ class Location extends Model {
     	$record->save();
     }
 
+    private static function getPathToProgram() {
+        return base_path('app/Helper/Triangulation/main.out');
+    }
+
     /**
      * Find norm-2 of the difference vector
      *
@@ -33,7 +38,7 @@ class Location extends Model {
      */
     private static function distance2($position1, $position2) {
         return array_sum(array_map(function($a, $b) {
-            return ($a - $b) * ($a - $b);
+            return pow($a - $b, 2);
         }, $position1, $position2));
     }
 
@@ -52,9 +57,8 @@ class Location extends Model {
     	// select only the latest 8 adapters
     	$allRecord = Location::where('device_id', $device_id)
             ->orderBy('updated_at', 'desc')
-    		->take(env('MAXIMUM_TRIANGULATION_ADAPTERS', 8))
-            ->get()
-            ->all();
+            ->take(env('MAXIMUM_TRIANGULATION_ADAPTERS', 8))
+            ->get()->all();
 
         $allRecord = array_filter($allRecord, function($record) use ($currentTime) {
             return $currentTime - $record->getLastUpdatedTime() <= env('MAXIMUM_DELAY_TIME', 1000);
@@ -71,51 +75,34 @@ class Location extends Model {
     		$record->adapter = Adapter::getAdapterByID($record->adapter_id); 
     	}
 
-    	// run gradient descent
-    	/*
-    	D = 1/4 * sum( e^((ti-T)/alpha) * (dx^2 + dy^2 + dz^2 - l^2)^2 )
-    	dD/dx = 1/4 * sum( e^((ti-T)/alpha) * 2*(dx^2 + dy^2 + dz^2 - l^2) * (2*(x-xi)) )
-    	same as dD/dy and dD/dz
-    	*/
-
-    	$T = $allRecord[0]->getLastUpdatedTime();
-        $T = $currentTime;
-        $alpha = 10.0;
-        $learning_rate = 0.001;
         $dimension = count($allRecord[0]->adapter->getPosition());
-
+        $device = Device::getDeviceByID($device_id);
+        $position = $device->getCurrentLocation();
+        
+        $data = ' ';
+        $data .= count($allRecord) . ' ';
+        $data .= $dimension . ' ';
         foreach ($allRecord as &$record) {
-            $record->coef = exp(($record->getLastUpdatedTime() - $T) / $alpha);
+            foreach ($record->adapter->getPosition() as $pos) {
+                $data .= $pos . ' ';
+            }
+            $data .= $record->getLastUpdatedTime() . ' ';
+            $data .= $record->length . ' ';
+            $data .= ' ';
         }
-    	
-        $position = $allRecord[0]->adapter->getPosition();
-    	
-        for ($i = 0 ; $i < env('ITERATIONS', 100) ; ++$i) {
+        foreach ($position as $pos) {
+            $data .= $pos . ' ';
+        }
 
-            $gradiences = [];
-            for ($idx = 0 ; $idx < $dimension ; ++$idx) {
-                $gradient = 0;
-                foreach ($allRecord as &$record) {
-                    $gradient += $record->coef 
-    					* (Location::distance2($record->adapter->getPosition(), $position) + $record->length)
-    					* ($position[$idx] - $record->adapter->getSpecificPosition($idx));
-                }
-                $gradiences[$idx] = $gradient;
-            }
+        $path_to_program = Location::getPathToProgram();
 
-            for ($j = 0 ; $j < $dimension ; ++$j) {
-                $position[$j] -= $learning_rate * $gradiences[$j];
-            }
-    	}
-		
-		$device = Device::getDeviceByID($device_id);
+        
+        $output = shell_exec($path_to_program . ' ' . $data);
+        // print_r($data);
+        // print_r($output);
 
-		// $time_elapsed = $currentTime - $T;
-		// $position = array_map(function($x, $v) use ($time_elapsed) {
-		// 	return $x + $time_elapsed * $v;
-		// }, $position, $velocity);
-
-		$device->updateLocation($position);
+        $position = array_map('floatval', explode(' ', trim($output)));
+        $device->updateLocation($position);
 
 		return '';
     }

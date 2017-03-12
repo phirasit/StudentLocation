@@ -32,7 +32,7 @@ function drawArea(canvas_id, points, color) {
 		ctx.stroke();
 	}
 
-	ctx.globalAlpha = 0.3;
+	ctx.globalAlpha = 0.5;
 
 	ctx.fillStyle = color;
 	ctx.closePath();

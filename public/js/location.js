@@ -13,7 +13,6 @@ function registerStudentDevice(device_mac_address, display_id, token_id, color) 
 }
 
 function getAreaPositionInMap(area, mapINFO) {
-	result = extractXML(mapINFO, area);
 	return result == "" ? [] : JSON.parse(result);
 }
 
@@ -46,6 +45,7 @@ function refreshLocation(display_canvas_id, mapINFO) {
 	        },
 		}).done(function(responseText) {
 
+			console.log(responseText);
 			var data = JSON.parse(responseText);
 
 			if (data.callButton == '') {
@@ -62,9 +62,10 @@ function refreshLocation(display_canvas_id, mapINFO) {
 				console.log('unknown response:' + data.callButton);
 			}
 
-			// drawArea(display_canvas_id, getAreaPositionInMap(data.area, mapINFO), device.color);
+			// drawArea(display_canvas_id, mapINFO[data.area], device.color);
 
 			if (data.location != null && data.location.length == 3) {
+				console.log(data.location[0], data.location[1], data.location[2]);
 				drawCircle(display_canvas_id, [data.location[0], data.location[1]], device.color);
 			}
 

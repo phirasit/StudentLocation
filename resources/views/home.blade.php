@@ -5,7 +5,7 @@
 {{ Html::style('css/style.css') }}
 {{ Html::script('js/location.js') }}
 {{ Html::script('js/drawlocation.js') }}
-{{ Html::script('js/loadXML.js') }}
+{{ Html::script('js/loadFile.js') }}
 
 <script type="text/javascript">
     
@@ -14,11 +14,32 @@
     var callStudent_url = '{{ url('/callStudent') }}';
 
 
-    var mapINFO;
+    var mapINFO, timeLimit = 1000;
     var widthDistance, heightDistance;
 
+    // set autoload button
+    var autoload = false;
+    function toggleAutorefresh() {
+        autoload = !autoload;
+        if (autoload) {
+            refresh();
+        }
+    }
+
+    var lastRefresh;
+    var limit = 3000;
+
     function refresh() {
+
+        lastRefresh = new Date();
         refreshLocation("mapCanvas", mapINFO);
+
+        if (autoload) {
+            var now = new Date();
+            var refreshLengthMillisec = (now.getTime() - lastRefresh.getTime()) * 1000;
+            // console.log(now.getTime(), lastRefresh.getTime());
+            setTimeout(refresh, Math.max(0, limit - refreshLengthMillisec));
+        }
     }
 
     // set onload function
@@ -28,13 +49,17 @@
             registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token", "{{ $student['color'] }}");
         @endforeach
 
-        loadXML("{{ url('/map/'. $map . '/map.xml') }}", function(data) {
+        loadJson("{{ url('/map/'. $map . '/map.json') }}", function(data) {
+
             mapINFO = data;
-            widthDistance = extractXML(mapINFO, 'width');
-            heightDistance = extractXML(mapINFO, 'height');
+            widthDistance = mapINFO['width'];
+            heightDistance = mapINFO['height'];
             refresh();
+
         });
     }
+
+
 </script>
 
 <div class="container">
@@ -44,10 +69,6 @@
                 <div class="panel-heading">
                     {{-- Students --}}
                     Users
-                    <span class='text-right' style='display: inline-block;' width='100%'>
-
-                    {{ Html::image('img/refresh_icon.png', 'refresh', array('width' => 50, 'height' => 40, 'onclick' => 'refresh();', 'class' => 'btn')) }}
-                    </span>
                 </div>
 
                 <div class="panel-body">
@@ -75,13 +96,26 @@
                                 {{ $student['message'] or "No Message" }}
                             </td>
 --}}
-                            <td class="text-left" style="padding: 10px;">
+                            <td class="text-center" style="padding: 10px;">
                                 <div id='{{ $student['std_id'] }}_location' style='display: inline-block;'>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                     </table>
+                    <div class='text-center'>
+                        <div style="display:inline-block; vertical-align: middle;">
+                            <label class="switch" style="margin: 0;">
+                                <input type="checkbox" onclick="toggleAutorefresh();">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                        <div style="display: inline-block;">
+                            <label style="margin:0; padding: 0;">
+                                auto refresh
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="panel-footer text-center">
@@ -133,8 +167,7 @@
                 <div class="panel-heading">Current Location</div>
 
                 <div class="panel-body text-center">
-                    <canvas id="mapCanvas" class='col-md-12' height='200px'
-                        style="border:1px solid #000000; width: 100%; background: url({{ url('map/'. $map .'/map.jpg') }}); background-size: 100% 100%; background-repeat: no-repeat; margin: 0; padding: 0;">
+                    <canvas id="mapCanvas" class='col-md-12 map' height='200px' style="background: url({{ url('map/'. $map .'/map.jpg') }}); background-size: 100% 100%; background-repeat: no-repeat; ">
                         Your browser does not support the HTML5 canvas tag.
                     </canvas>
                 </div>
