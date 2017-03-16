@@ -16,10 +16,23 @@ function getAreaPositionInMap(area, mapINFO) {
 	return result == "" ? [] : JSON.parse(result);
 }
 
+function refreshImage(display_canvas_id, mapINFO) {
+	// drawArea(display_canvas_id, mapINFO[data.area], device.color);
+
+	clearCanvas(display_canvas_id);
+
+	for (i in devices) {
+
+	// 	var device = devices[i];
+	// 	if (device.location != undefined) {
+	// 		drawCircle(display_canvas_id, [device.location[0], device.location[1]], device.color);
+	// 	}
+	}
+
+}
+
 // get new location for all devices
 function refreshLocation(display_canvas_id, mapINFO) {
-
-	var rect = $("#map").position();
 
 	if (csrf == null) {
 		console.log("csrf is not found");
@@ -31,6 +44,7 @@ function refreshLocation(display_canvas_id, mapINFO) {
 	function refreshEachDevice(idx) {
 		
 		if (idx >= devices.length) {
+			refreshImage(display_canvas_id, mapINFO);
 			return;
 		}
 
@@ -45,8 +59,8 @@ function refreshLocation(display_canvas_id, mapINFO) {
 	        },
 		}).done(function(responseText) {
 
-			console.log(responseText);
-			var data = JSON.parse(responseText);
+			var data = responseText;
+			// console.log(data);
 
 			if (data.callButton == '') {
 				$("#" + device["display_id"]).html(data.area);		
@@ -62,11 +76,11 @@ function refreshLocation(display_canvas_id, mapINFO) {
 				console.log('unknown response:' + data.callButton);
 			}
 
-			// drawArea(display_canvas_id, mapINFO[data.area], device.color);
-
-			if (data.location != null && data.location.length == 3) {
-				console.log(data.location[0], data.location[1], data.location[2]);
-				drawCircle(display_canvas_id, [data.location[0], data.location[1]], device.color);
+			if (data.area != '-') {
+				console.log(data.location);
+				devices[idx].location = data.location;
+			} else {
+				devices[idx].location = null;
 			}
 
 			refreshEachDevice(idx+1);
@@ -79,6 +93,8 @@ function refreshLocation(display_canvas_id, mapINFO) {
 
 function call(device_mac_address, area) {
 
+	console.log(device_mac_address, area);
+
 	$.ajax({
 		url: callStudent_url + '/' + device_mac_address + '/' + area,
 		type: "POST",
@@ -88,6 +104,10 @@ function call(device_mac_address, area) {
         	area: area,
         },
 	}).done(function(responseText) {
+		console.log(responseText);
 		refresh();
+	}).fail(function(responseText) {
+		console.log(responseText);
 	});
 }
+

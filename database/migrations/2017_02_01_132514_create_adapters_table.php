@@ -17,9 +17,10 @@ class CreateAdaptersTable extends Migration
             $table->increments('id');
             $table->string('adapter_name', 100)->index();
             $table->string('area');
-            $table->double('location_x');
-            $table->double('location_y');
-            $table->double('location_z');
+            $table->double('location_x')->default(0.0);
+            $table->double('location_y')->default(0.0);
+            $table->double('location_z')->default(0.0);
+            $table->double('inside_length')->default(0.0);
         });
     }
 

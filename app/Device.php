@@ -20,23 +20,37 @@ class Device extends Model {
 
     public static function getArea($device_mac_address) {
     	$device = Device::getDeviceByAddress($device_mac_address);
-    	return ($device == null ? "error" : $device->area);
+        if ($device == null) {
+            return "device is not regiestered";
+        } else if ( time() - $device->getLastUpdatedTime() > env('DEVICE_TIME_LIMIT', 30)) {
+            return '-';
+        } else {
+            return $device->area;
+        }
     }
+
     public static function getLocation($device_mac_address) {
         $device = Device::getDeviceByAddress($device_mac_address);
         return ($device == null ? [0, 0, 0] : $device->getCurrentLocation());
     }
 
     public function updateArea($area) {
-        $this->update(['area' => $area]);
+        $this->update([
+            'area' => $area,
+        ]);
+        $this->touch();
+        return $this;
     }
 
     public function updateLocation($position) {
-        return $this->update([
+        $this->timestamps = false;
+        $this->update([
             'location_x' => $position[0],
             'location_y' => $position[1],
             'location_z' => $position[2],
         ]);
+        $this->timestamps = true;
+        return $this;
     }
 
     public function getID() {
@@ -44,7 +58,7 @@ class Device extends Model {
     }
     
     public function getLastUpdatedTime() {
-        return $this->updated_at;
+        return ($this->updated_at == null ? 0 : $this->updated_at->format('U'));
     }
 
     public function getCurrentLocation() {

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use \DateTime;
 
 class WaitingList extends Model {
+
+    protected $fillable = ['id', 'area'];
     
 	public $table = 'waitinglists';
 

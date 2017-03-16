@@ -10,6 +10,9 @@ use App\Device;
 use App\Student;
 use App\UserStudent;
 
+// use App\Helpers\ColorGenerator;
+use App\Helpers\ColorGenerator;
+
 class HomeController extends Controller
 {
     /**
@@ -20,8 +23,6 @@ class HomeController extends Controller
     public function __construct() {
         $this->middleware('auth');
     }
-
-    protected $randomColor = ['#90EE90', '#FCAEFC', '#87CEFA', '#F08080', '#008080'];
 
     /**
      * Show the application main page.
@@ -52,13 +53,21 @@ class HomeController extends Controller
                     'std_id' => $student->std_id,
                     'std_level' => (int)($student->std_room/10),
                     'std_class' => $student->std_room%10,
-                    'color' => $this->randomColor[ count($students) % count($this->randomColor)],
+                    'color' => 'black',
                     'device_mac_address' => $student->device_mac_address,
                 ]);
             }
         }
 
-        return view('home')->with('students', $students)->with('map', 'Nitad');
+        // add color to each of them
+        foreach (ColorGenerator::generateContrastColor( count($students) ) as $key => $color) {
+            $students[$key]['color'] = $color;
+        }
+
+        return view('home')
+            ->with('students', $students)
+            // ->with('map', 'CUD');
+            ->with('map', 'Nitad');
     }
 
     /**

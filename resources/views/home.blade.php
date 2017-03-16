@@ -2,21 +2,25 @@
 
 @section('content')
 
-{{ Html::style('css/style.css') }}
-{{ Html::script('js/location.js') }}
-{{ Html::script('js/drawlocation.js') }}
-{{ Html::script('js/loadFile.js') }}
-
 <script type="text/javascript">
     
     // define variables
     var getLocation_url = '{{ url('/getLocation') }}';
     var callStudent_url = '{{ url('/callStudent') }}';
 
-
+    var canvasID = "mapCanvas";
     var mapINFO, timeLimit = 1000;
     var widthDistance, heightDistance;
 
+</script>
+
+{{ Html::style('css/style.css') }}
+{{ Html::script('js/location.js') }}
+{{ Html::script('js/drawlocation.js') }}
+{{ Html::script('js/loadFile.js') }}
+
+
+<script type="text/javascript">
     // set autoload button
     var autoload = false;
     function toggleAutorefresh() {
@@ -27,36 +31,51 @@
     }
 
     var lastRefresh;
-    var limit = 3000;
+    var limit = 2000;
 
     function refresh() {
 
         lastRefresh = new Date();
-        refreshLocation("mapCanvas", mapINFO);
+        refreshLocation(canvasID, mapINFO);
 
         if (autoload) {
             var now = new Date();
             var refreshLengthMillisec = (now.getTime() - lastRefresh.getTime()) * 1000;
             // console.log(now.getTime(), lastRefresh.getTime());
-            setTimeout(refresh, Math.max(0, limit - refreshLengthMillisec));
+            setTimeout(refresh, Math.max(0, limit));
         }
     }
 
     // set onload function
     document.body.onload = function() {
         
-        @foreach ($students as $student)
-            registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token", "{{ $student['color'] }}");
-        @endforeach
-
         loadJson("{{ url('/map/'. $map . '/map.json') }}", function(data) {
 
             mapINFO = data;
             widthDistance = mapINFO['width'];
             heightDistance = mapINFO['height'];
-            refresh();
 
+            @foreach ($students as $student)
+
+                // register the device
+                registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token", "{{ $student['color'] }}");
+                
+                // add onmouseover event
+                document.getElementById("{{ $student['std_id'] }}_location").onmouseover = function() {
+                    var area = $("#{{ $student['std_id'] }}_location").text();
+                    refreshImage(canvasID, mapINFO);
+                    drawArea(canvasID, mapINFO[area], "{{ $student['color'] }}");
+                }
+            @endforeach
+
+            refresh();
         });
+
+        var canvas = document.getElementById('mapCanvas');
+        // canvas.onclick = function(evt) {
+        //     console.log(getCoor(canvas, evt));
+        // }
+
     }
 
 
@@ -80,8 +99,14 @@
                             <th style="width: 30%;" class="text-center">Location</th>
                         </tr>
                     </thead>
-                    @foreach ($students as $key => $student)
+
+                    @if (count($students) == 0) 
                         <tr>
+                            <td colspan="3" class='text-center'>No Data</td>
+                        </tr>
+                    @endif
+                    @foreach ($students as $key => $student)
+                        <tr id='{{ $student['std_id'] }}_row'>
                             <td class='text-center' style="padding: 5px;">
                                 {{ $key+1 }}
                             </td>
@@ -123,7 +148,8 @@
                         <div class="input-group">
                             {{ Form::text('student_id', '', array(
                                 'class' => 'form-control span2', 
-                                'placeholder' => 'Student ID',
+                                // 'placeholder' => 'Student ID',
+                                'placeholder' => 'User ID',
                             )) }}
                             <span class='input-group-addon btn label-success' style="border-color:green; padding: 0; margin: 0;">
                                 {{ Form::label('add', '+', array(

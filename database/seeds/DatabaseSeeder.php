@@ -86,13 +86,31 @@ class StudentsTableSeeder extends Seeder {
 		// 	'device_mac_address' => 'FF:FF:40:00:15:0D',
 		// ]);
 
-		for ($i = 1 ; $i <= 20 ; ++$i) {
+		$data = [
+			'13:67:14:FC:58:FC',
+			'36:59:DC:FA:58:FC',
+			'C9:35:0D:FA:58:FC',
+			'FF:FF:B0:00:0C:32',
+			'FF:FF:00:00:04:78',
+			'FF:FF:00:00:1D:78',
+			'FF:FF:10:00:0D:0D',
+			'FF:FF:40:00:15:0D',
+			'FF:FF:70:00:07:11',
+			'FF:FF:90:00:0C:84',
+			'FF:FF:E0:01:45:FF',
+			'FF:FF:E0:01:53:40',
+			'FF:FF:E0:01:5C:D3',
+			'FF:FF:E0:01:37:36',
+			'FF:FF:F0:00:37:25',
+		];
+
+		foreach ($data as $key => $device_mac_address) {
 			Student::insert([
-				'name' => 'user' . $i,
-				'std_id' => $i,
+				'name' => 'user' . $key,
+				'std_id' => $key,
 				'std_room' => 0,
 				'std_no' => 0,
-				'device_mac_address' => $i,
+				'device_mac_address' => $device_mac_address,
 			]);
 		}
 	}
@@ -106,48 +124,69 @@ class AdapterTableSeeder extends Seeder {
 		// clear database
 		Adapter::truncate();
 
-		// Adapter::insert([
-		// 	'adapter_name' => '66:39:21:1A:E7:B9',
-		// 	'area' => 'Robotic club',
-		// 	'location_x' => 0,
-		// 	'location_y' => 0,
-		// 	'location_z' => 0,
-		// ]);
+		Adapter::insert([
+			'adapter_name' => '66:39:21:1A:E7:B9',
+			'area' => 'Adapter1',
+			'location_x' => 13.00,
+			'location_y' => 4.64,
+			'location_z' => 2.00,
+			'inside_length' => 3.0,
+		]);
+
+		Adapter::insert([
+			'adapter_name' => '40:6A:2A:23:21:C4',
+			'area' => 'Adapter2',
+			'location_x' => 8.2,
+			'location_y' => 10.92,
+			'location_z' => 2.07,
+			'inside_length' => 2.0,
+		]);
+
+		Adapter::insert([
+			'adapter_name' => '6A:E0:EA:A8:86:2B',
+			'area' => 'Adapter3',
+			'location_x' => 1.0,
+			'location_y' => 10.62,
+			'location_z' => 2.34,
+			'inside_length' => 5.00,
+		]);
+
+		Adapter::insert([ // done
+			'adapter_name' => '8E:DE:A6:EB:56:BB',
+			'area' => 'Adapter4',
+			'location_x' => 25.00,
+			'location_y' => 10.62,
+			'location_z' => 2.34,
+			'inside_length' => 5.0,
+		]);
 
 
-		// Adapter::insert([
-		// 	'adapter_name' => '2343402',
-		// 	'area' => 'tmp2',
-		// 	'location_x' => 10,
-		// 	'location_y' => 10,
-		// 	'location_z' => 0,
-		// ]);
+		Adapter::insert([
+			'adapter_name' => '6C:5B:92:CB:C5:C1',
+			'area' => 'Adapter5',
+			'location_x' => 2.0,
+			'location_y' => 1.0,
+			'location_z' => 2.34,
+			'inside_length' => 5.0,
+		]);
 
-		// Adapter::insert([
-		// 	'adapter_name' => '234342402',
-		// 	'area' => 'tmp2',
-		// 	'location_x' => 0,
-		// 	'location_y' => 10,
-		// 	'location_z' => 0,
-		// ]);
+		Adapter::insert([
+			'adapter_name' => 'B8:27:EB:22:EF:69',
+			'area' => 'Adapter6',
+			'location_x' => 8.2,
+			'location_y' => 10.62,
+			'location_z' => 1.00,
+			'inside_length' => 2.0,
+		]);
 
-		// Adapter::insert([
-		// 	'adapter_name' => '234343402',
-		// 	'area' => 'tmp2',
-		// 	'location_x' => 10,
-		// 	'location_y' => 10,
-		// 	'location_z' => 0,
-		// ]);
-
-		for ($j = 1 ; $j <= 6 ; ++$j) {
-			Adapter::insert([
-				'adapter_name' => $j,
-				'area' => 'area'. $j,
-				'location_x' => (($j-1) % 3) * 13,
-				'location_y' => ($j <= 3 ? 0 : 12),
-				'location_z' => 0,
-			]);
-		}
+		Adapter::insert([
+			'adapter_name' => 'B8:27:EB:19:BC:DC',
+			'area' => 'Adapter7',
+			'location_x' => 8.2,
+			'location_y' => 10.62,
+			'location_z' => 1.00,
+			'inside_length' => 2.0,
+		]);
 	}
 }
 
@@ -158,13 +197,30 @@ class DeviceLocationTableSeeder extends Seeder {
 		// clear database
 		Device::truncate();
 
-		// Device::insert([
-		// 	'device_mac_address' => 'TBA1',
-		// 	'area' => 'Door1',
-		// 	'location_x' => 0,
-		// 	'location_y' => 0,
-		// 	'location_z' => 0,
-		// ]);
+		$data = [
+			'13:67:14:FC:58:FC',
+			'36:59:DC:FA:58:FC',
+			'C9:35:0D:FA:58:FC',
+			'FF:FF:B0:00:0C:32',
+			'FF:FF:00:00:04:78',
+			'FF:FF:00:00:1D:78',
+			'FF:FF:10:00:0D:0D',
+			'FF:FF:40:00:15:0D',
+			'FF:FF:70:00:07:11',
+			'FF:FF:90:00:0C:84',
+			'FF:FF:E0:01:45:FF',
+			'FF:FF:E0:01:53:40',
+			'FF:FF:E0:01:5C:D3',
+			'FF:FF:E0:01:37:36',
+			'FF:FF:F0:00:37:25',
+		];
+
+		foreach ($data as $key => $device_mac_address) {
+			Device::insert([
+				'device_mac_address' => $device_mac_address,
+				// 'area' => ($key <= 6 ? 'Adapter' . $key : ''),
+			]);
+		}
 
 		// Device::insert([
 		// 	'device_mac_address' => 'TBA2',
@@ -181,15 +237,15 @@ class DeviceLocationTableSeeder extends Seeder {
 		// 	'location_y' => 10,
 		// 	'location_z' => 0,
 		// ]);
-		for ($i = 1 ; $i <= 20 ; ++$i) {
-			Device::insert([
-				'device_mac_address' => $i,
-				'area' => 'area'. $i,
-				'location_x' => 10,
-				'location_y' => 10,
-				'location_z' => 0,
-			]);
-		}
+		// for ($i = 1 ; $i <= 20 ; ++$i) {
+		// 	Device::insert([
+		// 		'device_mac_address' => $i,
+		// 		'area' => 'area'. $i,
+		// 		'location_x' => 10,
+		// 		'location_y' => 10,
+		// 		'location_z' => 0,
+		// 	]);
+		// }
 
 	}
 }
@@ -229,25 +285,25 @@ class LocationTableSeeder extends Seeder {
 		// 	'updated_at' => time(),
 		// ]);
 
-		for ($i = 1 ; $i <= 20 ; ++$i) {
+		// for ($i = 1 ; $i <= 20 ; ++$i) {
 
-			$x = rand(1, 26);
-			$y = rand(1, 12);
+		// 	$x = rand(1, 26);
+		// 	$y = rand(1, 12);
 
-			for ($j = 1 ; $j <= 6 ; ++$j) {
+		// 	for ($j = 1 ; $j <= 6 ; ++$j) {
 
-				$adapter = Adapter::getAdapterByID($j);
+		// 		$adapter = Adapter::getAdapterByID($j);
 
 
-				Location::insert([
-					'device_id' => $i,
-					'adapter_id' => $j,
-					'length' => sqrt(pow($x - $adapter->location_x, 2) + pow($y - $adapter->location_y, 2)),
-				]);
+		// 		Location::insert([
+		// 			'device_id' => $i,
+		// 			'adapter_id' => $j,
+		// 			'length' => sqrt(pow($x - $adapter->location_x, 2) + pow($y - $adapter->location_y, 2)),
+		// 		]);
 
-				// Location::where('device_id', $i)->first()->touch();
-			}
-		}
+		// 		// Location::where('device_id', $i)->first()->touch();
+		// 	}
+		// }
 	}
 }
 
@@ -258,24 +314,9 @@ class UserStudentRelationshipTableSeeder extends Seeder {
 		// clear database
 		DB::table('user_student_relationships')->truncate();
 
-		// DB::table('user_student_relationships')->insert([
-		// 	'user_id' => User::where('name', 'admin')->first()->id,
-		// 	'student_id' => Student::where('std_id', 47411449)->first()->id,
-		// ]);
-
-		// DB::table('user_student_relationships')->insert([
-		// 	'user_id' => User::where('name', 'admin')->first()->id,
-		// 	'student_id' => Student::where('std_id', 12345674)->first()->id,
-		// ]);
-
-		// DB::table('user_student_relationships')->insert([
-		// 	'user_id' => User::where('name', 'admin')->first()->id,
-		// 	'student_id' => Student::where('std_id', 5931040421)->first()->id,
-		// ]);
-
-		for ($i = 1 ; $i <= 20 ; ++$i) {
-			UserStudent::insert([
-				'user_id' => User::where('name', 'admin')->first()->id,
+		for ($i = 1 ; $i <= 14 ; ++$i) {
+			DB::table('user_student_relationships')->insert([
+				'user_id' => 1,
 				'student_id' => $i,
 			]);
 		}
@@ -288,10 +329,10 @@ class WaitingSeeder extends Seeder {
 
 		DB::table('waitinglists')->truncate();
 
-		// DB::table('waitinglists')->insert([
-		// 	'id' => 0,
-		// 	'area' => 'Door1',
-		// ]);
+		DB::table('waitinglists')->insert([
+			'id' => 0,
+			'area' => 'Door3',
+		]);
 		// DB::table('waitinglists')->insert([
 		// 	'id' => 0,
 		// 	'area' => 'Door2',

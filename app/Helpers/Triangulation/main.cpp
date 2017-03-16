@@ -29,8 +29,8 @@ class Location {
 		double coef, rem_const;
 
 		void init(int max_t) {
-			coef = exp((double) (t - max_t) / alpha) + 1.0;
-			// coef = 2.0;
+			// coef = exp((double) (t - max_t) / alpha) + 1.0;
+			coef = 2.0;
 		}
 
 		void calcGradConst(point& q) {
@@ -146,19 +146,19 @@ int main(int argc, char* argv[]) {
 	}
 	std::cout << std::endl;
 
-	std::cerr << "###########" << std::endl;
-	double D = 0;
-	for (auto& loc : location) {
-		double len = 0.0;
-		for (int i = 0 ; i < d ; ++i) {
-			std::cerr << loc.position[i] << " ";
-			len += pow(loc.position[i] - pos[i], 2);
-		}
-		std::cerr << loc.t << " " << loc.length << " # " << sqrt(len) << std::endl;
-		D += pow(len - pow(loc.length, 2), loc.coef);
-	}
+	// std::cerr << "###########" << std::endl;
+	// double D = 0;
+	// for (auto& loc : location) {
+	// 	double len = 0.0;
+	// 	for (int i = 0 ; i < d ; ++i) {
+	// 		std::cerr << loc.position[i] << " ";
+	// 		len += pow(loc.position[i] - pos[i], 2);
+	// 	}
+	// 	std::cerr << loc.t << " " << loc.length << " # " << sqrt(len) << std::endl;
+	// 	D += pow(len - pow(loc.length, 2), loc.coef);
+	// }
 
-	std::cerr << D << std::endl;
+	// std::cerr << D << std::endl;
 
 	return 0;
 }

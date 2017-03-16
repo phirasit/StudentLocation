@@ -14,9 +14,10 @@ class CreateLocationsTable extends Migration
     public function up()
     {
         Schema::create('locations', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('device_id')->index();
             $table->integer('adapter_id');
-            $table->double('length');
+            $table->double('length')->default(0.0);
             $table->timestamps();
         });
     }

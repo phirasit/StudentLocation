@@ -11,7 +11,7 @@ function clearCanvas(canvas_id) {
 
 function drawArea(canvas_id, points, color) {
 
-	if (points.length == 0) {
+	if (points == undefined || points.length == 0) {
 		return;
 	}
 
@@ -26,6 +26,7 @@ function drawArea(canvas_id, points, color) {
 	ctx.beginPath();
 	ctx.strokeStyle = color;
 	ctx.moveTo(last[0] * w, last[1] * h);
+
 	for (var i = 0 ; i < points.length ; ++i) {
 		var point = points[i];
 		ctx.lineTo(point[0] * w, point[1] * h);
@@ -45,12 +46,13 @@ function drawCircle(canvas_id, pos, color) {
 	const w = canvas.width, h = canvas.height;
 	var ctx = canvas.getContext("2d");
 	
-	ctx.strokeStyle = color;
-
 	pos[0] /= widthDistance;
 	pos[1] /= heightDistance;
 	
 	ctx.globalAlpha = 1.0;
+	ctx.strokeStyle = color;
+	ctx.fillStyle = color;
+
 	ctx.beginPath();
 	ctx.arc(pos[0] * w, pos[1] * h, radius, 0, 2*Math.PI);
 	ctx.stroke();
@@ -60,6 +62,11 @@ function drawCircle(canvas_id, pos, color) {
  	ctx.fillStyle = color;
 	ctx.closePath();
 	ctx.fill();
+}
 
-
+function getCoor(canvas, evt) {
+    return {
+      x: (evt.clientX ) / canvas.width,
+      y: (evt.clientY ) / canvas.height
+    };
 }

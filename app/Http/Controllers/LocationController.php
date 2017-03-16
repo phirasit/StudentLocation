@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 use App\Adapter;
 use App\Device;
@@ -20,20 +21,19 @@ class LocationController extends Controller {
         $device = Device::getDeviceByAddress($device_mac_address);
 
         if ($device == null) {
-            return json_encode('');
+            return Response::json('[]');
         }
 
-        Location::triangulatePosition($device->getID());
-
+        $res = Location::triangulatePosition($device->getID());
         $area = Device::getArea($device_mac_address);
 
         $data = [
             'area' => $area,
             'callButton' => WaitingList::getCallButton($device->id, $area),
-            'location' => Device::getLocation($device_mac_address),
+            'location' => $res,
         ];
 
-        return json_encode($data);
+        return Response::json($data);
     }
 
     public function sendLocation($adapter_name, Request $request) {
@@ -41,21 +41,25 @@ class LocationController extends Controller {
         $adapter = Adapter::getAdapterByName($adapter_name);
 
         if ($adapter == null) {
-            return abort('403');
+            return response('The device is not registered', 200)
+                  ->header('Content-Type', 'text/plain');
         }
 
         $content = $request->json()->all();
+
         $adapter_id = $adapter->id;
         $area = $adapter->area;
+        $range = floatval($adapter->inside_length);
 
         foreach ($content['data'] as $device) {
         
             $dev = Device::getDeviceByAddress($device['device_mac_address']);
+
             if ($dev == null) {
                 continue;
             }
 
-            if ($device['length'] != null and $device['length'] < env('RANGE_LIMIT', 20)) {
+            if ($device['length'] != null and floatval($device['length']) < $range) {
                 
                 // update a brief location  
                 $dev->updateArea($area);
@@ -65,6 +69,7 @@ class LocationController extends Controller {
             Location::enqueueNewLocation($adapter_id, $dev, $device['length']);
         }
 
-        return abort(200);
+        return response('[OK] update complete', 200)
+                  ->header('Content-Type', 'text/plain');
     }
 }
