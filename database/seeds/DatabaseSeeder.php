@@ -126,7 +126,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => '66:39:21:1A:E7:B9',
-			'area' => 'Door5',
+			'area' => 'Door3',
 			'location_x' => 13.00,
 			'location_y' => 4.64,
 			'location_z' => 2.00,
@@ -144,7 +144,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => '6A:E0:EA:A8:86:2B',
-			'area' => 'Door5',
+			'area' => 'อาคารบริหาร',
 			'location_x' => 1.0,
 			'location_y' => 10.62,
 			'location_z' => 2.34,
@@ -153,7 +153,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([ // done
 			'adapter_name' => '8E:DE:A6:EB:56:BB',
-			'area' => 'Door5',
+			'area' => 'อาคารบริหาร',
 			'location_x' => 25.00,
 			'location_y' => 10.62,
 			'location_z' => 2.34,
