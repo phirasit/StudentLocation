@@ -66,8 +66,8 @@ class HomeController extends Controller
 
         return view('home')
             ->with('students', $students)
-            // ->with('map', 'CUD');
-            ->with('map', 'Nitad');
+            ->with('map', 'CUD');
+            // ->with('map', 'Nitad');
     }
 
     /**

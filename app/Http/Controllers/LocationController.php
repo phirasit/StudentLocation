@@ -59,11 +59,11 @@ class LocationController extends Controller {
                 continue;
             }
 
-            if ($device['length'] != null and floatval($device['length']) < $range) {
+            // if ($device['length'] != null and floatval($device['length']) < $range) {
                 
                 // update a brief location  
                 $dev->updateArea($area);
-            }
+            // }
         
             // enqueue the data for position triangulation
             Location::enqueueNewLocation($adapter_id, $dev, $device['length']);

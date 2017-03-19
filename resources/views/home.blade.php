@@ -193,7 +193,7 @@
                 <div class="panel-heading">Current Location</div>
 
                 <div class="panel-body text-center">
-                    <canvas id="mapCanvas" class='col-md-12 map' height='200px' style="background: url({{ url('map/'. $map .'/map.jpg') }}); background-size: 100% 100%; background-repeat: no-repeat; ">
+                    <canvas id="mapCanvas" class='col-md-12 map' height='300px' style="background: url({{ url('map/'. $map .'/map.jpg') }}); background-size: 100% 100%; background-repeat: no-repeat; ">
                         Your browser does not support the HTML5 canvas tag.
                     </canvas>
                 </div>
