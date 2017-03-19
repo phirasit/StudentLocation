@@ -66,7 +66,7 @@
                         No Data
                     </div>
                 @else
-                    <div class="panel-body" id='main-display' style='display:none;'>
+                    <div class="panel-body text-center" id='main-display' style='display:none;'>
                     </div>
                 @endif
             </div>

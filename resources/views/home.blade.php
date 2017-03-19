@@ -61,7 +61,7 @@
                 registerStudentDevice("{{ $student['device_mac_address'] }}", "{{ $student['std_id'] }}_location", "{{ $student['std_id'] }}_token", "{{ $student['color'] }}");
                 
                 // add onmouseover event
-                document.getElementById("{{ $student['std_id'] }}_location").onmouseover = function() {
+                document.getElementById("{{ $student['std_id'] }}_name").onmouseover = function() {
                     var area = $("#{{ $student['std_id'] }}_location").text();
                     refreshImage(canvasID, mapINFO);
                     drawArea(canvasID, mapINFO[area], "{{ $student['color'] }}");
@@ -111,10 +111,12 @@
                                 {{ $key+1 }}
                             </td>
                             <td class='text-left' style="padding-left: 20px;">
+                                <div id='{{ $student['std_id'] }}_name'>
                                 <span style='border-bottom-color: {{ $student['color'] }}; border-bottom-style: solid;'>
-                                    {{ $student['name'] }}
+                                        {{ $student['name'] }}
                                     {{-- ({{ $student['std_level'] }}/{{ $student['std_class'] }})  --}}
                                 </span>
+                                </div>
                             </td>
 {{--                             
                             <td class="col-md-1 text-center">
