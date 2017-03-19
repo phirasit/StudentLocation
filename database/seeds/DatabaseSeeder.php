@@ -106,7 +106,7 @@ class StudentsTableSeeder extends Seeder {
 
 		foreach ($data as $key => $device_mac_address) {
 			Student::insert([
-				'name' => 'user' . $key,
+				'name' => 'user' . ($key + 1),
 				'std_id' => $key,
 				'std_room' => 0,
 				'std_no' => 0,
@@ -126,25 +126,25 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => '66:39:21:1A:E7:B9',
-			'area' => 'Adapter1',
+			'area' => 'Receiver1',
 			'location_x' => 13.00,
 			'location_y' => 4.64,
 			'location_z' => 2.00,
-			'inside_length' => 3.0,
-		]);
-
-		Adapter::insert([
-			'adapter_name' => '40:6A:2A:23:21:C4',
-			'area' => 'Adapter2',
-			'location_x' => 8.2,
-			'location_y' => 10.92,
-			'location_z' => 2.07,
 			'inside_length' => 2.0,
 		]);
 
 		Adapter::insert([
+			'adapter_name' => '40:6A:2A:23:21:C4',
+			'area' => 'Receiver2',
+			'location_x' => 8.2,
+			'location_y' => 10.92,
+			'location_z' => 2.07,
+			'inside_length' => 5,
+		]);
+
+		Adapter::insert([
 			'adapter_name' => '6A:E0:EA:A8:86:2B',
-			'area' => 'Adapter3',
+			'area' => 'Receiver3',
 			'location_x' => 1.0,
 			'location_y' => 10.62,
 			'location_z' => 2.34,
@@ -153,7 +153,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([ // done
 			'adapter_name' => '8E:DE:A6:EB:56:BB',
-			'area' => 'Adapter4',
+			'area' => 'Receiver4',
 			'location_x' => 25.00,
 			'location_y' => 10.62,
 			'location_z' => 2.34,
@@ -163,7 +163,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => '6C:5B:92:CB:C5:C1',
-			'area' => 'Adapter5',
+			'area' => 'Receiver5',
 			'location_x' => 2.0,
 			'location_y' => 1.0,
 			'location_z' => 2.34,
@@ -172,7 +172,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => 'B8:27:EB:22:EF:69',
-			'area' => 'Adapter6',
+			'area' => 'Receiver6',
 			'location_x' => 8.2,
 			'location_y' => 10.62,
 			'location_z' => 1.00,
@@ -181,7 +181,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => 'B8:27:EB:19:BC:DC',
-			'area' => 'Adapter7',
+			'area' => 'Receiver7',
 			'location_x' => 8.2,
 			'location_y' => 10.62,
 			'location_z' => 1.00,
@@ -218,7 +218,7 @@ class DeviceLocationTableSeeder extends Seeder {
 		foreach ($data as $key => $device_mac_address) {
 			Device::insert([
 				'device_mac_address' => $device_mac_address,
-				// 'area' => ($key <= 6 ? 'Adapter' . $key : ''),
+				// 'area' => ($key <= 6 ? 'Receiver' . $key : ''),
 			]);
 		}
 
