@@ -70,7 +70,7 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li>
-                                        <a href="{{ url('/updateProfile') }}">
+                                        <a href="{{ url('/profile') }}">
                                             Profile
                                         </a>
                                     </li>

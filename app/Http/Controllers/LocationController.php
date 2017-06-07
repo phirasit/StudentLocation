@@ -24,13 +24,13 @@ class LocationController extends Controller {
             return Response::json('[]');
         }
 
-        $res = Location::triangulatePosition($device->getID());
+        // $res = Location::triangulatePosition($device->getID());
         $area = Device::getArea($device_mac_address);
 
         $data = [
             'area' => $area,
             'callButton' => WaitingList::getCallButton($device->id, $area),
-            'location' => $res,
+            // 'location' => $res,
         ];
 
         return Response::json($data);

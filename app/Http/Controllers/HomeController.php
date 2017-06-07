@@ -10,7 +10,6 @@ use App\Device;
 use App\Student;
 use App\UserStudent;
 
-// use App\Helpers\ColorGenerator;
 use App\Helpers\ColorGenerator;
 
 class HomeController extends Controller
@@ -67,7 +66,6 @@ class HomeController extends Controller
         return view('home')
             ->with('students', $students)
             ->with('map', 'CUD');
-            // ->with('map', 'Nitad');
     }
 
     /**
@@ -121,10 +119,6 @@ class HomeController extends Controller
         } else {
             return abort(404);
         }
-    }
-
-    public function updateProfile() {
-        return view('updateProfile');
     }
 
 }

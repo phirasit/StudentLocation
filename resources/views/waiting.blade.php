@@ -22,11 +22,10 @@
         }
         var student = data[0];
 
-        console.log(student.row);
-
         $("#"+student.row).addClass("sliding-middle-out");
+        console.log(student.id);
         $("#main-display").fadeOut(500).html(
-            student.id
+            "<img width='50%' src='{{ url('') }}/img/cars/" + student.id + ".jpg'/>"
         ).fadeIn(500);
 
         setTimeout(function() {
@@ -41,7 +40,6 @@
     }
 
     function startSlideShow() {
-        console.log(Math.max(data.length, 1) * timeLimit);
         setTimeout(endSlideShow, Math.max(data.length, 1) * timeLimit);
         if (data.length > 0) {
             runSlideShow(data);

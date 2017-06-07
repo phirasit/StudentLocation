@@ -45,14 +45,8 @@ class LoginController extends Controller
         return view('auth/login');
     }
 
-    // /**
-    //  * use username instead of email
-    //  *
-    //  * @return string
-    // */
-    
-    // public function username() {
-    //     return "username";
-    // }
-
+    public function username()
+    {
+        return 'name';
+    }
 }

@@ -6,7 +6,8 @@ Route::get('/', function () { return view('welcome'); });
 Route::get('/home', 'HomeController@index')->middleware('auth');
 
 Route::post('/manageStudent', 'HomeController@manageStudent')->middleware('auth');
-Route::get('/updateProfile', 'HomeController@updateProfile')->middleware('auth');
+Route::get('/profile', 'ProfileController@showProfile')->middleware('auth');
+Route::post('/profile/update', 'ProfileController@updateProfile')->middleware('auth');
 
 Route::post('/getLocation', 'LocationController@getLocation')->middleware('auth');
 Route::get('/sendLocation/{adapter_name}', 'LocationController@sendLocation');

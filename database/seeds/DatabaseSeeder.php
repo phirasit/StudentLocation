@@ -51,6 +51,12 @@ class UsersTableSeeder extends Seeder {
 			'password' 	=> bcrypt(''),
 		]);
 
+		User::insert([
+			'name' 		=> 'Jerasak',
+			'email' 	=> 'j_jerasak@hotmail.com',
+			'password' 	=> bcrypt('12345678'),
+		]);
+
 
 	}
 }
@@ -144,7 +150,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => '6A:E0:EA:A8:86:2B',
-			'area' => 'อาคารบริหาร',
+			'area' => 'Door5',
 			'location_x' => 1.0,
 			'location_y' => 10.62,
 			'location_z' => 2.34,
@@ -153,7 +159,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([ // done
 			'adapter_name' => '8E:DE:A6:EB:56:BB',
-			'area' => 'อาคารบริหาร',
+			'area' => 'Door5',
 			'location_x' => 25.00,
 			'location_y' => 10.62,
 			'location_z' => 2.34,
@@ -163,7 +169,7 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => '6C:5B:92:CB:C5:C1',
-			'area' => 'Door5',
+			'area' => 'Door3',
 			'location_x' => 2.0,
 			'location_y' => 1.0,
 			'location_z' => 2.34,
@@ -314,12 +320,12 @@ class UserStudentRelationshipTableSeeder extends Seeder {
 		// clear database
 		DB::table('user_student_relationships')->truncate();
 
-		for ($i = 1 ; $i <= 14 ; ++$i) {
+		// for ($i = 1 ; $i <= 14 ; ++$i) {
 			DB::table('user_student_relationships')->insert([
 				'user_id' => 1,
-				'student_id' => $i,
+				'student_id' => 11,
 			]);
-		}
+		// }
 	}	
 }
 
@@ -331,11 +337,11 @@ class WaitingSeeder extends Seeder {
 
 		DB::table('waitinglists')->insert([
 			'id' => 0,
-			'area' => 'Door5',
+			'area' => 'Door3',
 		]);
 		DB::table('waitinglists')->insert([
 			'id' => 0,
-			'area' => 'Door5',
+			'area' => 'Gate3',
 		]);
 		// DB::table('waitinglists')->insert([
 		// 	'id' => 0,
