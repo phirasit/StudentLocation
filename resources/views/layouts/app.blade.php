@@ -75,6 +75,27 @@
                                         </a>
                                     </li>
 
+                                    @if (Auth::user()->isAdmin())
+                                    <li>
+                                        <a href="{{ url('/student') }}">
+                                            Student Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('/user') }}">
+                                            User Management
+                                        </a>
+                                    </li>
+                                    @endif
+
+                                    @if (Auth::user()->isSuperAdmin())
+                                    <li>
+                                        <a href="{{ url('/system') }}">
+                                            System Management
+                                        </a>
+                                    </li>
+                                    @endif
+
                                     <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();

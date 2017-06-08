@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Validator;
+use Exception;
 use Hash;
+use Validator;
+use Storage;
+use File;
 
 use App\User;
 
@@ -16,6 +19,21 @@ class ProfileController extends Controller {
     public function showProfile(Request $request) {
 
         return view('profile')->with('user', Auth::user());
+    }
+
+    public function getImage($folder, $id) {
+    	if ($id == Auth::user()->id or Auth::user()->isAdmin()) {
+            $dir = storage_path(env('STORAGE_DIR', 'app') .'/'. $folder .'/'. $id . '.jpg');
+            if (File::exists($dir)) {
+                $file = File::get($dir);
+        	    return response($file, 200)->header('Content-Type', 'image/jpeg');
+            } else {
+                $file = File::get(public_path('img/noimage.png'));
+                return response($file, 200)->header('Content-Type', 'image/jpeg');
+                }
+    	} else {
+    		return abort(404);
+    	}
     }
 
     public function updateProfile(Request $request) {
@@ -45,7 +63,7 @@ class ProfileController extends Controller {
 	    }
 
 		// check uploading file
-		if ($request->hasFile('car_image')) {
+		if ($request->hasFile('car_image') and $request->file('car_image')->isValid()) {
 
     		$rules = array_merge($rules, [
     			'car_image' => 'mimes:jpeg|max:' . env('CAR_IMAGE_MAX_SIZE_KB', '10240'),
@@ -96,12 +114,14 @@ class ProfileController extends Controller {
     	// uploading the image
     	if (in_array('car_image', $updated)) {
 
-    		$img = $request->file('car_image');
-
-			$car_imageDir = storage_path( env('CAR_IMAGE_DIR', 'app/cars') );
-
-    		$filename = Auth::user()->id . '.jpg';
-    		Image::make($img->getRealPath())->resize( env('CAR_IMAGE_WIDTH', 500), env('CAR_IMAGE_HEGHT', 500) )->save($car_imageDir);
+    		try {
+	    		$img = $request->file('car_image');
+				$car_imageDir = storage_path( env('CAR_IMAGE_DIR', 'app/cars') );
+	    		$filename = strtolower(Auth::user()->id . '.' . $img->getClientOriginalExtension());
+	    		$img->move($car_imageDir, $filename);   
+    		} catch (Exception $e) {
+    			return redirect('/profile')->with('message', 'information updated (but image is not uploaded');
+    		}
 
     	}
     	

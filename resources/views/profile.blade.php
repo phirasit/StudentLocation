@@ -43,7 +43,10 @@
 
                     <!-- Car image -->
                     <tr>
-                        <td class='text-right'> Car Image </td>                        
+                        <td class='text-right'> 
+                            Car Image <br> 
+                            {{ Html::image('image/cars/' . $user['id'], 'current image', ['width' => 100, 'height' => 100]) }}
+                        </td>                        
                         <td>
                             <input name='car_image' type="file" accept=".jpg" class='form-control btn-primary'>
                             @if ($errors->has('car_image'))

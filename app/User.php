@@ -53,4 +53,22 @@ class User extends Authenticatable
     public function getEmail() {
         return $this->hashOne('email');
     }
+
+    /**
+     * check whether the user is admin / superadmin
+     *
+     * @return boolean
+     */
+    public function isAdmin() {
+        return $this->status < 2;
+    }
+
+    /**
+     * check whether the user is superadmin
+     *
+     * @return boolean
+     */
+    public function isSuperAdmin() {
+        return $this->status < 1;
+    }
 }
