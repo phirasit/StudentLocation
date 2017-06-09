@@ -25,7 +25,7 @@
         $("#"+student.row).addClass("sliding-middle-out");
         console.log(student.id);
         $("#main-display").fadeOut(500).html(
-            "<img width='50%' src='{{ url('') }}/img/cars/" + student.id + ".jpg'/>"
+            "<img width='50%' src='{{ url('') }}/image/portraits/" + student.id + "'/>"
         ).fadeIn(500);
 
         setTimeout(function() {

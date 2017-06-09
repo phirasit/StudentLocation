@@ -16,12 +16,12 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('name');
+            $table->string('name')->default("")->unique();
             $table->string('std_id')->index()->unique();
-            $table->integer('std_room')->index();
-            $table->integer('std_no')->index();
+            $table->integer('std_room')->default(0);
+            $table->integer('std_no')->default(0);
 
-            $table->string('device_mac_address', 100);
+            $table->string('device_mac_address', 20)->default("")->unique();
             
             $table->timestamps();
         });

@@ -12,6 +12,7 @@ use Storage;
 use File;
 
 use App\User;
+use App\Student;
 
 class ProfileController extends Controller {
 
@@ -51,7 +52,7 @@ class ProfileController extends Controller {
 	    if ($input['email'] != Auth::user()->email) {
 
     		$rules = array_merge($rules, [
-    			'email' => 'required|email|max:100|unique:users'
+    			'email' => 'required|email|max:100|unique:users,email'
 	    	]);
 	    	$message = array_merge($message, [
 	    		'email.required' => 'email is necessary',
@@ -116,7 +117,7 @@ class ProfileController extends Controller {
 
     		try {
 	    		$img = $request->file('car_image');
-				$car_imageDir = storage_path( env('CAR_IMAGE_DIR', 'app/cars') );
+				$car_imageDir = storage_path( env('STORAGE_IMAGE_DIR', 'app') . '/cars' );
 	    		$filename = strtolower(Auth::user()->id . '.' . $img->getClientOriginalExtension());
 	    		$img->move($car_imageDir, $filename);   
     		} catch (Exception $e) {
@@ -127,5 +128,4 @@ class ProfileController extends Controller {
     	
     	return redirect('/profile')->with('message', 'information updated');
     }
-
 }

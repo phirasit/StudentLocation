@@ -9,7 +9,7 @@
             <form action="{{ url('/profile/update') }}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             
-            <div class="panel panel-default">
+            <div class="panel panel-default col-md-6" style="margin:10px;">
 
                 <div class="panel-heading text-left">
                     Personal Information
@@ -62,7 +62,8 @@
                 </table>
                 </div>
             </div>
-            <div class="panel panel-default">
+
+            <div class="panel panel-default col-md-5" style="margin: 10px;">
 
                 <div class="panel-heading text-left">
                     Security
@@ -107,19 +108,19 @@
 
             </div>
 
-            <div class='panel panel-default'>
+            <div class='panel panel-default col-md-12' style="margin: 10px;">
 
                 <!-- submit button -->
-                <div class='panel-heading'>
+                <div class='panel-body'>
                     <input type="submit" name="submit" class="form-control btn btn-primary" value="update information">
+                    <!-- response text -->
+                    @if (session()->has('message'))
+                        <div class='text-center text-success'>
+                            {{ session('message') }}
+                        </div>
+                    @endif
                 </div>            
                 
-                <!-- response text -->
-                @if (session()->has('message'))
-                    <div class='panel-footer text-center text-success'>
-                        {{ session('message') }}
-                    </div>
-                @endif
             </div>
             
             </form>

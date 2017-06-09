@@ -14,6 +14,7 @@ Route::post('/profile/update', 'ProfileController@updateProfile')->middleware('a
 
 // anything about students
 Route::get('/student', 'StudentController@index')->middleware('auth');
+Route::post('/student/update/{id}', 'StudentController@updateStudent')->middleware('auth');
 
 // get / send Location
 Route::post('/getLocation', 'LocationController@getLocation')->middleware('auth');

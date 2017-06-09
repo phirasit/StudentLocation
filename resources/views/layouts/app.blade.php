@@ -62,6 +62,24 @@
                                 </a>
                             </li>
 
+                            @if (Auth::user()->isAdmin())
+                            
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    waiting list  <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+
+                                    @foreach(['Door3', 'Door5'] as $area)
+                                        <li> <a href="{{ url('/WaitingList/' . $area ) }}">
+                                            {{ $area }}
+                                        </a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            @endif  
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
