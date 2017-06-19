@@ -66,8 +66,10 @@ class LocationController extends Controller {
             // }
         
             // enqueue the data for position triangulation
-            Location::enqueueNewLocation($adapter_id, $dev, $device['length']);
+            // Location::enqueueNewLocation($adapter_id, $dev, $device['length']);
         }
+
+        $adapter->touch();
 
         return response('[OK] update complete', 200)
                   ->header('Content-Type', 'text/plain');

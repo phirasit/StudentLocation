@@ -63,7 +63,6 @@
                             </li>
 
                             @if (Auth::user()->isAdmin())
-                            
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     waiting list  <span class="caret"></span>
@@ -79,6 +78,22 @@
                                 </ul>
                             </li>
                             @endif  
+
+
+                            @if (Auth::user()->isSuperAdmin())
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    System Management  <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li> <a href="{{ url('/system/receiver') }}">
+                                        Reciever
+                                    </a></li>
+                                </ul>
+
+                            </li>
+                            @endif
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -100,19 +115,12 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('/user') }}">
+                                        <a href="{{ url('system/user') }}">
                                             User Management
                                         </a>
                                     </li>
                                     @endif
 
-                                    @if (Auth::user()->isSuperAdmin())
-                                    <li>
-                                        <a href="{{ url('/system') }}">
-                                            System Management
-                                        </a>
-                                    </li>
-                                    @endif
 
                                     <li>
                                         <a href="{{ url('/logout') }}"

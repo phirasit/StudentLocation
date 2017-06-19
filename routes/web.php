@@ -26,3 +26,9 @@ Route::get('/WaitingList/{location}', 'WaitingListController@displayWaiting')->m
 
 // get Image with authentication
 Route::get('/image/{folder}/{id}', 'ProfileController@getImage')->middleware('auth');
+
+// receiver
+Route::get('/system/receiver', 'SystemController@getReceiver');
+Route::post('/system/receiver/edit', 'SystemController@updateReceiver');
+Route::post('/system/receiver/create', 'SystemController@createReceiver');
+Route::post('/system/receiver/remove', 'SystemController@removeReceiver');

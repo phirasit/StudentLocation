@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Adapter extends Model
 {
-
+	protected $fillable = ['area', 'ip_address'];
+    
 	public static function getAdapterByID($adapter_id) {
 		return Adapter::where('id', $adapter_id)->first();
 	}
