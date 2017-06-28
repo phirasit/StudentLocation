@@ -55,6 +55,15 @@ class User extends Authenticatable
     }
 
     /**
+     * get status of that person
+     *
+     * @return string
+     */
+    public function getStatus() {
+        return $this->status;
+    }
+
+    /**
      * check whether the user is admin / superadmin
      *
      * @return boolean
@@ -70,5 +79,12 @@ class User extends Authenticatable
      */
     public function isSuperAdmin() {
         return $this->status < 1;
+    }
+
+    public static function getUserByEmail($email) {
+        return User::where('email', $email)->first();
+    }
+    public static function getUserByID($id) {
+        return User::where('id', $id)->first();
     }
 }

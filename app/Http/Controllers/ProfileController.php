@@ -18,8 +18,41 @@ class ProfileController extends Controller {
 
 
     public function showProfile(Request $request) {
-
         return view('profile')->with('user', Auth::user());
+    }
+
+    public function getUser() {
+        if (!Auth::user()->isSuperAdmin()) return abort(403);
+        return view('admin/user');
+    }
+
+    public function getUserByEmail(Request $request) {
+        if (!Auth::user()->isSuperAdmin()) return abort(403);
+
+        $email = $request->all()['email'];
+        if ($email == null) {
+                return view('admin/user')->Errors(["email" => "no email is given"]);
+        } else {
+            $user = User::getUserByEmail($email);
+            if ($user == null) {
+                return redirect()->back()->withInput()->withErrors(["email" => "invalid email"]);
+            } else {
+                return view('admin/user')->with('user', $user);
+            }
+        }
+    }
+
+    public function updateStatus(Request $request, $id) {
+        if (!Auth::user()->isSuperAdmin()) return abort(403);
+
+        $status = $request->all()['status'];
+        if ($status == null) {
+            return abort(500);
+        } else {
+            $user = User::getUserByID($id);
+            $user->update(['status' => $status]);
+            return redirect('system/user');
+        }
     }
 
     public function getImage($folder, $id) {
@@ -31,7 +64,7 @@ class ProfileController extends Controller {
             } else {
                 $file = File::get(public_path('img/noimage.png'));
                 return response($file, 200)->header('Content-Type', 'image/jpeg');
-                }
+            }
     	} else {
     		return abort(404);
     	}

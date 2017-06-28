@@ -17,6 +17,7 @@ class CreateAdaptersTable extends Migration
             $table->increments('id');
             $table->string('adapter_name', 100)->index();
             $table->string('area')->default('not assigned');
+            $table->string('login_user')->default('pi');
             $table->integer('ip_address')->default(0);
             $table->double('location_x')->default(0.0);
             $table->double('location_y')->default(0.0);

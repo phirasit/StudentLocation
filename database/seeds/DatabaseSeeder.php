@@ -188,7 +188,6 @@ class AdapterTableSeeder extends Seeder {
 
 		Adapter::insert([
 			'adapter_name' => 'B8:27:EB:19:BC:DC',
-			'area' => 'Door5',
 			'location_x' => 8.2,
 			'location_y' => 10.62,
 			'location_z' => 1.00,

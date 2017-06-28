@@ -25,15 +25,16 @@ class SystemController extends Controller {
             return response('[ERROR] no adapter is found', 200)->header('Content-Type', 'text/plain');
         }
 
-        if (!array_key_exists('area', $input) or !array_key_exists('ip', $input)) {
+        if (!array_key_exists('area', $input) or !array_key_exists('ip', $input) or !array_key_exists('user', $input)) {
             return response('[ERROR] data is incomplete', 200)->header('Content-Type', 'text/plain');
         }
         if (!filter_var($input['ip'], FILTER_VALIDATE_IP)) {
             return response('[ERROR] '. $input['ip'] .' is not ip address', 200)->header('Content-Type', 'text/plain');    
         }
-
+        
         $adapter->update([
             'area' => $input['area'],
+            'login_user' => $input['user'],
             'ip_address' => ip2long($input['ip']),
             'updated_at' => $adapter->updated_at,
         ]);
@@ -78,6 +79,29 @@ class SystemController extends Controller {
         } else {
             $adapter->delete();
             return response('[OK] adapter is deleted', 200)->header('Content-Type', 'text/plain');
+        }
+    }
+
+    public function sendCommand(Request $request) {
+        if (!Auth::user()->isSuperAdmin()) return abort('403');
+
+        $input = $request->all();
+        $adapter = Adapter::getAdapterByID($input['id']);    
+        
+        if ($adapter == null) {
+            return response('[ERROR] adapter is not existed', 200)->header('Content-Type', 'text/plain');
+        } else if ($input['command'] == '') {
+            return response('[ERROR] no command to send', 200)->header('Content-Type', 'text/plain');    
+        } else {
+
+
+            // add ssh and stderr redirection
+            $command = "ssh " . $adapter['login_user'] . "@" . $adapter->getIPAddress() . " " . $input['command'] . " 2>&1";
+
+            $result = exec($command);
+
+            $response = $result . "<br><br> - " . $command;
+            return response('[OK] command is send<br>' . $response, 200)->header('Content-Type', 'text/plain');
         }
     }
 

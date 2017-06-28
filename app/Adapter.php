@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Adapter extends Model
 {
-	protected $fillable = ['area', 'ip_address'];
+	protected $fillable = ['area', 'ip_address', 'login_user'];
     
 	public static function getAdapterByID($adapter_id) {
 		return Adapter::where('id', $adapter_id)->first();
@@ -18,6 +18,10 @@ class Adapter extends Model
 
 	public function getPosition() {
 		return array($this->location_x, $this->location_y, $this->location_z);
+	}
+
+	public function getIPAddress() {
+		return long2ip($this->ip_address);
 	}
 
 	public function getSpecificPosition($idx) {

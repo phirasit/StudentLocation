@@ -32,3 +32,9 @@ Route::get('/system/receiver', 'SystemController@getReceiver');
 Route::post('/system/receiver/edit', 'SystemController@updateReceiver');
 Route::post('/system/receiver/create', 'SystemController@createReceiver');
 Route::post('/system/receiver/remove', 'SystemController@removeReceiver');
+Route::post('/system/receiver/command', 'SystemController@sendCommand');
+
+// user management
+Route::get('/system/user', 'ProfileController@getUser')->middleware('auth');
+Route::post('/system/user/email', 'ProfileController@getUserByEmail')->middleware('auth');
+Route::post('/system/user/updateStatus/{id}', 'ProfileController@updateStatus')->middleware('auth');
