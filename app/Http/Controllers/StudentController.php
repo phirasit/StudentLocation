@@ -171,7 +171,12 @@ class StudentController extends Controller {
         if (in_array('id', $updated)) $student->std_id = $input['id'];
         if (in_array('room', $updated)) $student->std_room = $input['room'];
         if (in_array('no', $updated)) $student->std_no = $input['no'];
-        if (in_array('device_mac_address', $updated)) $student->device_mac_address = $input['device_mac_address'];
+        if (in_array('device_mac_address', $updated)) {
+            $student->device_mac_address = $input['device_mac_address'];
+            if (Device::getDeviceByAddress($input['device_mac_address']) == null) {
+                Device::insertNewRecord($input['device_mac_address']);
+            }
+        }
         $student->save();
 
         // uploading the image

@@ -34,6 +34,12 @@ class Device extends Model {
         return ($device == null ? [0, 0, 0] : $device->getCurrentLocation());
     }
 
+    public static function insertNewRecord($device_mac_address) {
+        return Device::insert([
+            'device_mac_address' => $device_mac_address,
+        ]);
+    }
+
     public function updateArea($area) {
         $this->update([
             'area' => $area,
@@ -41,7 +47,7 @@ class Device extends Model {
         $this->touch();
         return $this;
     }
-
+    
     public function updateLocation($position) {
         $this->timestamps = false;
         $this->update([

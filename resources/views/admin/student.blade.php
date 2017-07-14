@@ -18,10 +18,12 @@
 
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     
-                    <div class="col-md-2" style="padding: 0; background: url('{{ url('image/portraits/' . $student->id) }}') no-repeat center; background-size: 90%; height: 200px; text-align: center; vertical-align: middle; line-height: 200px;">
+                    <div class="col-md-2" style="padding: 10px;">
+                        <div style="padding: 0; background: url('{{ url('image/portraits/' . $student->id) }}') no-repeat center; background-size: 90%; height: 200px; text-align: center; vertical-align: middle; line-height: 200px;">
+                        </div>
                     </div>
 
-                    <div class="col-md-10" style="padding: 0;">
+                    <div class="col-md-8" style="padding: 0;">
                     <table class="table" style="margin: 0;">
                         <colgroup>
                             <col class="col-md-2">
