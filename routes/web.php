@@ -4,9 +4,7 @@ Auth::routes();
 
 Route::get('/', function () { return view('welcome'); });
 Route::get('/home', 'HomeController@index')->middleware('auth');
-
-// managing student
-Route::post('/manageStudent', 'HomeController@manageStudent')->middleware('auth');
+Route::get('/home/{mode}', 'HomeController@index')->middleware('auth');
 
 // profile controller
 Route::get('/profile', 'ProfileController@showProfile')->middleware('auth');

@@ -12,6 +12,7 @@ use Storage;
 use File;
 
 use App\User;
+use App\UserStudent;
 use App\Student;
 
 class ProfileController extends Controller {
@@ -76,6 +77,36 @@ class ProfileController extends Controller {
     	// if (!$request->secure()) return abort('403');	
 
     	$input = $request->all();
+
+        $type = $input['submit'];
+
+        if ($type == 'add') {
+
+            $student_id = $input['student_id'];
+            $student = Student::getStudentByStudentID($student_id);
+            if ($student == null) {
+                return redirect('home')->with('addingStudent', [
+                    'success' => false,
+                    'message' => 'This ID is not in the database',
+                ]);
+            }
+
+            $result = UserStudent::addNewRelationship(Auth::user()->id, $student->id); 
+            return redirect('/profile')->with('student_message', 'student added');
+        } else if ($type == 'remove') {
+
+            $student_id = $input['student_id'];
+            $student = Student::getStudentByStudentID($student_id);
+            if ($student == null) {
+                return redirect('home')->with('addingStudent', [
+                    'success' => false,
+                    'message' => 'This ID is not in the database',
+                ]);
+            }
+
+            $result = UserStudent::removeRelationship(Auth::user()->id, $student->id);
+            return redirect('/profile')->with('student_message', 'student removed');
+        }
 
     	$rules = [];
     	$message = [];

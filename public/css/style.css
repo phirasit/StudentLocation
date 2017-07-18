@@ -89,3 +89,23 @@ input:checked + .slider:before {
     border:1px solid #000000; width: 100%; 
 	margin: 0; padding: 0;
 }
+
+/* Side naviagtion bar */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 300px; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: white; /* Black*/
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+	
+/* When you mouse over the navigation links, change their color */
+.sidenav tr:hover, .offcanvas tr:focus{
+    color: #f1f1f1;
+}

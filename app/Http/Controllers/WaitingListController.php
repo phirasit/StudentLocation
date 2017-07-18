@@ -36,7 +36,9 @@ class WaitingListController extends Controller
             }
         }
 
-        return view('waiting')->with('student_list', $students);
+        return view('waiting')
+            ->with('area', $location)
+            ->with('student_list', $students);
     }
 
     public function callStudent($device_mac_address, $area) {

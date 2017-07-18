@@ -35,8 +35,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'CUD Student Location System') }}
+                    <a class="navbar-brand" href="{{ url('/home') }}">
+                        {{ config('app.name', 'Location System') }}
                     </a>
                 </div>
 
@@ -56,16 +56,10 @@
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
 
-                            <li>
-                                <a href="{{ url('/home') }}">
-                                    Home
-                                </a>
-                            </li>
-
                             @if (Auth::user()->isAdmin())
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    waiting list  <span class="caret"></span>
+                                    Waiting List  <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
@@ -116,6 +110,12 @@
                                     <li>
                                         <a href="{{ url('/profile') }}">
                                             Profile
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ url('/') }}">
+                                            Home Page
                                         </a>
                                     </li>
 

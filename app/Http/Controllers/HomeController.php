@@ -28,7 +28,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index($mode = "Description") {
 
         // recieve every students who are related to user
         $students = [];
@@ -65,60 +65,6 @@ class HomeController extends Controller
 
         return view('home')
             ->with('students', $students)
-            ->with('map', 'CUD');
+            ->with('mode', $mode);
     }
-
-    /**
-     * when user try to add/remove a student
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function manageStudent(Request $request) {
-
-        $student_id = $request->input('student_id');
-        $type = $request->input('type');
-
-        $student = Student::getStudentByStudentID($student_id);
-        if ($student == null) {
-            return redirect('home')->with('addingStudent', [
-                'success' => false,
-                'message' => 'This ID is not in the database',
-            ]);
-        }
-
-        if ($type == 'add') {
-
-            $result = UserStudent::addNewRelationship(Auth::user()->id, $student->id); 
-
-            if ($result == '') {
-                return redirect('home')->with('addingStudent', [
-                    'success' => true,
-                    'message' => 'New Record is successfully added',
-                ]);
-            } else {
-                return redirect('home')->with('addingStudent', [
-                    'success' => false,
-                    'message' => $result,
-                ]);
-            }
-        } else if ($type == 'remove') {
-
-            $result = UserStudent::removeRelationship(Auth::user()->id, $student->id);
-
-            if ($result == '') {
-                return redirect('home')->with('addingStudent', [
-                    'success' => true,
-                    'message' => 'This Record has been deleted',
-                ]);                
-            } else {
-                return redirect('home')->with('addingStudent', [
-                    'success' => false,
-                    'message' => $result,
-                ]);
-            }
-        } else {
-            return abort(404);
-        }
-    }
-
 }

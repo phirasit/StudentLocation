@@ -47,15 +47,9 @@ class UsersTableSeeder extends Seeder {
 		]);
 
 		User::insert([
-			'name' 		=> 'Guest',
-			'email' 	=> '',
-			'password' 	=> bcrypt(''),
-		]);
-
-		User::insert([
 			'name' 		=> 'Jerasak',
 			'email' 	=> 'j_jerasak@hotmail.com',
-			'password' 	=> bcrypt('12345678'),
+			'password' 	=> bcrypt('123456'),
 		]);
 
 
@@ -224,7 +218,7 @@ class DeviceLocationTableSeeder extends Seeder {
 		foreach ($data as $key => $device_mac_address) {
 			Device::insert([
 				'device_mac_address' => $device_mac_address,
-				'area' => ($key <= 6 ? 'Door5' : 'Door5'),
+				// 'area' => ($key <= 6 ? 'Door3' : 'Door5'),
 			]);
 		}
 
@@ -321,10 +315,10 @@ class UserStudentRelationshipTableSeeder extends Seeder {
 		DB::table('user_student_relationships')->truncate();
 
 		// for ($i = 1 ; $i <= 14 ; ++$i) {
-			DB::table('user_student_relationships')->insert([
-				'user_id' => 1,
-				'student_id' => 11,
-			]);
+			// DB::table('user_student_relationships')->insert([
+			// 	'user_id' => 1,
+			// 	'student_id' => 11,
+			// ]);
 		// }
 	}	
 }
@@ -341,8 +335,9 @@ class WaitingSeeder extends Seeder {
 		]);
 		DB::table('waitinglists')->insert([
 			'id' => 0,
-			'area' => 'Gate3',
+			'area' => 'Door5',
 		]);
+
 		// DB::table('waitinglists')->insert([
 		// 	'id' => 0,
 		// 	'area' => 'Door2',

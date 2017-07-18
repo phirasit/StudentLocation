@@ -108,6 +108,52 @@
 
             </div>
 
+            <!-- Add/Rem Student -->
+            <div class="panel panel-default col-md-5" style="margin: 10px;">
+
+                <div class="panel-heading text-left">
+                    Add Student
+                </div>
+
+                <div class="panel-body">                
+                <table class="table">
+                    <colgroup>
+                        <col class="col-md-4">
+                        <col class="col-md-8">
+                    </colgroup>
+
+                    <tr>
+                        <td class='text-right'> Student ID </td>
+                        <td>
+
+                            <!-- student id -->
+                            <div class="form-group{{ $errors->has('student_id') ? ' has-error' : ''}}">
+                                <input type='text' name='student_id' class="form-control" placeholder="student ID">
+                                @if ($errors->has('student_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('student_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <button name="submit" type="submit" value="add" class="btn btn-success">
+                                Add
+                            </button>
+                            <button name="submit" type="submit" value="remove" class="btn btn-danger">
+                                Delete
+                            </button>
+
+                            @if (session()->has('student_message'))
+                                <div class='text-center'>
+                                    {{ session('student_message') }}
+                                </div>
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+                </div>
+
+            </div>
+
             <div class='panel panel-default col-md-12' style="margin: 10px;">
 
                 <!-- submit button -->
@@ -115,7 +161,7 @@
                     <input type="submit" name="submit" class="form-control btn btn-primary" value="update information">
                     <!-- response text -->
                     @if (session()->has('message'))
-                        <div class='text-center text-success'>
+                        <div class='text-center'>
                             {{ session('message') }}
                         </div>
                     @endif

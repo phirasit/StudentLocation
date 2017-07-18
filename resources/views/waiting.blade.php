@@ -57,7 +57,7 @@
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Information
+                    Information - {{ $area }}
                 </div>
                 @if (count($student_list) == 0)
                     <div class="panel-body text-center" id='main-display'>

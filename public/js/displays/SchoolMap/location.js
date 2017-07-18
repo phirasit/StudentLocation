@@ -19,7 +19,7 @@ function getAreaPositionInMap(area, mapINFO) {
 function refreshImage(display_canvas_id, mapINFO) {
 	// drawArea(display_canvas_id, mapINFO[data.area], device.color);
 
-	clearCanvas(display_canvas_id);
+	// clearCanvas(display_canvas_id);
 
 	for (i in devices) {
 
@@ -39,7 +39,7 @@ function refreshLocation(display_canvas_id, mapINFO) {
 		return;
 	}
 
-	clearCanvas(display_canvas_id);
+	// clearCanvas(display_canvas_id);
 
 	function refreshEachDevice(idx) {
 		
