@@ -12,12 +12,12 @@ function registerStudentDevice(device_mac_address, display_id, color) {
 	});
 }
 
-function getAreaPositionInMap(area, mapINFO) {
+function getAreaPositionInMap(area) {
 	return result == "" ? [] : JSON.parse(result);
 }
 
 // get new location for all devices
-function refreshLocation(display_canvas_id, mapINFO) {
+function refreshLocation() {
 
 	if (csrf == null) {
 		console.log("csrf is not found");

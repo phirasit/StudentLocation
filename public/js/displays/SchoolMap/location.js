@@ -3,11 +3,10 @@ var devices = [];
 var csrf = window.Laravel.csrfToken;
 
 // add new device to devices
-function registerStudentDevice(device_mac_address, display_id, token_id, color) {
+function registerStudentDevice(device_mac_address, display_id, color) {
 	devices.push({
 		device_mac_address: device_mac_address,
 		display_id: display_id,
-		token_id: token_id,
 		color: color,
 	});
 }
@@ -19,14 +18,15 @@ function getAreaPositionInMap(area, mapINFO) {
 function refreshImage(display_canvas_id, mapINFO) {
 	// drawArea(display_canvas_id, mapINFO[data.area], device.color);
 
-	// clearCanvas(display_canvas_id);
+	clearCanvas(display_canvas_id);
 
 	for (i in devices) {
 
-	// 	var device = devices[i];
-	// 	if (device.location != undefined) {
-	// 		drawCircle(display_canvas_id, [device.location[0], device.location[1]], device.color);
-	// 	}
+		console.log(i);
+		// var device = devices[i];
+		// if (device.location != undefined) {
+		// 	drawCircle(display_canvas_id, [device.location[0], device.location[1]], device.color);
+		// }
 	}
 
 }
@@ -39,7 +39,7 @@ function refreshLocation(display_canvas_id, mapINFO) {
 		return;
 	}
 
-	// clearCanvas(display_canvas_id);
+	clearCanvas(display_canvas_id);
 
 	function refreshEachDevice(idx) {
 		
@@ -69,7 +69,7 @@ function refreshLocation(display_canvas_id, mapINFO) {
 					class='btn btn-primary' \
 					onclick='call(\"" + device["device_mac_address"] + "\", \"" + data.area + "\");'>" 
 					+ data.area + 
-					"</button>");						
+					"</button>");
 			} else if (data.callButton == 'inactive') {
 				$("#" + device["display_id"]).html("<button class='btn btn-secondary disabled'>" + data.area + "</button>");
 			} else {

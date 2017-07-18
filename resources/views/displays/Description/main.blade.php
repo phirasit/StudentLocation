@@ -1,3 +1,36 @@
+<script type="text/javascript">
+    // set autoload button
+    var autoload = false;
+    function toggleAutorefresh() {
+        autoload = !autoload;
+        if (autoload) {
+            refresh();
+        }
+    }
+
+    var lastRefresh;
+    var limit = 5000;
+
+    function refresh() {
+
+        lastRefresh = new Date();
+        refreshLocation();
+
+        if (autoload) {
+            var now = new Date();
+            var refreshLengthMillisec = (now.getTime() - lastRefresh.getTime()) * 1000;
+            // console.log(now.getTime(), lastRefresh.getTime());
+            setTimeout(refresh, Math.max(0, limit));
+        }
+    }
+
+    // set onload function
+    document.body.onload = function() {
+        toggleAutorefresh();
+    }
+
+</script>
+
 {{ Html::script('js/displays/Description/location.js') }}
 
 <div style="margin: 10px;">
